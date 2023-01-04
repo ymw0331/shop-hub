@@ -1,3 +1,36 @@
+import bcrypt from "bcrypt";
+
+//hash password from plain user registration
+export const hashPassword = ( password ) =>
+{
+  return new Promise( ( resolve, reject ) =>
+  {
+    bcrypt.genSalt( 12, ( err, salt ) =>
+    {
+      if ( err )
+      {
+        reject( err );
+      }
+      bcrypt.hash( password, salt, ( err, hash ) =>
+      {
+        if ( err )
+        {
+          reject( err );
+        }
+        resolve( hash );
+      } );
+    } );
+  } );
+};
+
+
+
+//compare password when user login
+export const comparePassword = ( password, hashed ) =>
+{
+  return bcrypt.compare( password, hashed );
+};
+
 import User from "../models/user.js";
 import { hashPassword, comparePassword } from "../helpers/auth.js";
 import jwt from "jsonwebtoken";

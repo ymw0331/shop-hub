@@ -12,6 +12,6 @@ router.post( "/register", register );
 router.post( "/login", login );
 
 //Testing
-router.get( "/secret", requireSignin, isAdmin, secret );
+router.get( "/secret", requireSignin, secret );
 
 export default router;

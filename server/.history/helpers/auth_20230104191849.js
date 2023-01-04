@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 
 //hash password from plain user registration
+
 export const hashPassword = ( password ) =>
 {
   return new Promise( ( resolve, reject ) =>
