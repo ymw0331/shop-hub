@@ -144,6 +144,7 @@ export default function AdminCategory ()
               setValue={ setName }
               handleSubmit={ handleSubmit }
               placeholder={ "Write category name" }
+              buttonText={ "Create" }
 
             />
 

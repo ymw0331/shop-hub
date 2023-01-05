@@ -60,7 +60,8 @@ export default function AdminProduct ()
             <div className='p-3 mt-2 mb-2 h4 bg-light'>Create Product</div>
 
             { photo && <div className='text-center'>
-              <img src={ URL.createObjectURL( photo ) } alt='product photo' className='img img-responsive' height="200px" />
+              <img src={ URL.createObjectURL( photo ) } alt='product photo' />
+
             </div> }
 
             <div className='pt-2'>
