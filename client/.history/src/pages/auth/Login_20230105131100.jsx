@@ -10,7 +10,7 @@ export default function Login ()
   const [ email, setEmail ] = useState( 'wayne@gmail.com' );
   const [ password, setPassword ] = useState( 'wwwwwww' );
   //hook
-  const [ auth, setAuth ] = useAuth();
+const 
   // console.log( process.env.REACT_APP_API );
 
   const handleSubmit = async ( e ) =>
@@ -30,8 +30,6 @@ export default function Login ()
         toast.error( data.error );
       } else
       {
-        localStorage.setItem( 'auth', JSON.stringify( data ) ); //save user and token
-        setAuth( { ...auth, token: data.token, user: data.user } ); //put user info into context
         toast.success( "Login successful" );
       }
 

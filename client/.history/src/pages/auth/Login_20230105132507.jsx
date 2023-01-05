@@ -30,7 +30,8 @@ export default function Login ()
         toast.error( data.error );
       } else
       {
-        localStorage.setItem( 'auth', JSON.stringify( data ) ); //save user and token
+        
+
         setAuth( { ...auth, token: data.token, user: data.user } ); //put user info into context
         toast.success( "Login successful" );
       }

@@ -4,13 +4,17 @@ import axios from 'axios';
 import toast from "react-hot-toast";
 import { useAuth } from '../../context/auth';
 
-export default function Login ()
+
+export default function Register ()
 {
   //state
+  const [ name, setName ] = useState( 'Wayne' );
   const [ email, setEmail ] = useState( 'wayne@gmail.com' );
   const [ password, setPassword ] = useState( 'wwwwwww' );
+
   //hook
   const [ auth, setAuth ] = useAuth();
+
   // console.log( process.env.REACT_APP_API );
 
   const handleSubmit = async ( e ) =>
@@ -18,8 +22,9 @@ export default function Login ()
     e.preventDefault();
     try
     {
-      const { data } = await axios.post( `${ process.env.REACT_APP_API }/login`,
+      const { data } = await axios.post( `${ process.env.REACT_APP_API }/register`,
         {
+          name,
           email,
           password
         } );
@@ -30,25 +35,33 @@ export default function Login ()
         toast.error( data.error );
       } else
       {
-        localStorage.setItem( 'auth', JSON.stringify( data ) ); //save user and token
         setAuth( { ...auth, token: data.token, user: data.user } ); //put user info into context
-        toast.success( "Login successful" );
+        toast.success( "Registration successful" );
       }
 
     } catch ( error )
     {
       console.log( error );
-      toast.error( "Login failed. Please try again" );
+      toast.error( "Registration failed. Please try again" );
     }
   };
 
   return (
     <div>
-      <Jumbotron title="Login" />
+      <Jumbotron title="Register" />
       <div className="container mt-5 ">
         <div className="row">
           <div className="col-md-6 offset-md-3">
             <form onSubmit={ handleSubmit } >
+              <input
+                type="text"
+                className="form-control mb-4 p-2"
+                placeholder="Enter your name"
+                value={ name }
+                onChange={ ( e ) => setName( e.target.value ) }
+                autoFocus
+              >
+              </input>
               <input
                 type="email"
                 className="form-control mb-4 p-2"
