@@ -1,0 +1,18 @@
+.active {
+  text-decoration: underline;
+  text-decoration-thickness: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.card-button {
+  border-radius: 0px;
+}
+
+.hoverable:hover {
+
+  border-right: 5px solid #0d6efe;
+
+}

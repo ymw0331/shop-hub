@@ -1,0 +1,10 @@
+.active {
+  text-decoration: underline;
+  text-decoration-thickness: 5px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.card-button
