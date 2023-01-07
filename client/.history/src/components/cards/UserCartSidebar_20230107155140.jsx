@@ -1,0 +1,73 @@
+import { useAuth } from '../../context/auth';
+import { useNavigate } from 'react-router-dom';
+
+export default function UserCartSidebar ()
+{
+  //context
+  const [ auth, setAuth ] = useAuth();
+
+  const navigate = useNavigate();
+  const [ cart, setCart ] = useCart();
+
+
+  const cartTotal = () =>
+  {
+    let total = 0;
+    cart.map( ( item ) =>
+    {
+      total += item.price;
+    } );
+    return total.toLocaleString( "en-SG", {
+      style: "currency",
+      currency: "SGD"
+    } );
+
+  };
+
+  return (
+    <div className='col-md-4'>
+
+      <h4>Your cart summary</h4>
+      Total/Address/Payments
+      <hr />
+      <h6>Total: { cartTotal() }</h6>
+
+      {/* check if user has addres */ }
+      { auth?.user?.address ? (
+        <>
+          <div className='mb-3'>
+            <hr />
+            <h4>Address:</h4>
+            <h5>{ auth?.user?.address }</h5>
+
+          </div>
+          <button className='btn btn-outline-warning'
+            onClick={ () => navigate( '/dashboard/user/profile' ) }>
+            Update address
+          </button>
+        </>
+
+      ) : <div className='mb-3'>
+        {/* check if user loggin */ }
+        { auth?.token ?
+          (
+            <button className='btn btn-outline-warning'
+              onClick={ () => navigate( '/dashboard/user/profile' ) }>Add delivery address
+            </button>
+          )
+          :
+          (
+            <button className='btn btn-outline-danger mt-3'
+              onClick={ () =>
+                navigate( '/login', {
+                  state: '/cart' //use location hook to redirect after login
+                } ) }>
+              Login to checkout
+            </button>
+          )
+        }
+
+      </div> }
+    </div>
+  );
+}
