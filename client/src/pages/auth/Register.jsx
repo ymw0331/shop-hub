@@ -9,9 +9,9 @@ import { useNavigate } from 'react-router-dom';
 export default function Register ()
 {
   //state
-  const [ name, setName ] = useState( 'Wayne' );
-  const [ email, setEmail ] = useState( 'wayne@gmail.com' );
-  const [ password, setPassword ] = useState( 'wwwwwww' );
+  const [ name, setName ] = useState( '' );
+  const [ email, setEmail ] = useState( '' );
+  const [ password, setPassword ] = useState( '' );
 
   //hook
   const [ auth, setAuth ] = useAuth();
@@ -40,7 +40,7 @@ export default function Register ()
         localStorage.setItem( 'auth', JSON.stringify( data ) );
         setAuth( { ...auth, token: data.token, user: data.user } ); //put user info into context
         toast.success( "Registration successful" );
-        navigate( "/dashboard" );
+        navigate( "/dashboard/user" );
       }
 
     } catch ( error )

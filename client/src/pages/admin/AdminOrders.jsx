@@ -5,7 +5,7 @@ import AdminMenu from "../../components/nav/AdminMenu";
 import axios from "axios";
 import moment from "moment";
 import ProductCardHorizontal from "../../components/cards/ProductCardHorizontal";
-import { Select } from 'antd';
+import { Select } from "antd";
 
 const { Option } = Select;
 
@@ -20,9 +20,8 @@ export default function AdminOrders ()
     "Processing",
     "Shipped",
     "Delivered",
-    "Cancelled"
+    "Cancelled",
   ] );
-
   const [ changedStatus, setChangedStatus ] = useState( "" );
 
   useEffect( () =>
@@ -50,15 +49,13 @@ export default function AdminOrders ()
       const { data } = await axios.put( `/order-status/${ orderId }`, {
         status: value,
       } );
-
       getOrders();
-
-    } catch ( error )
+    } catch ( err )
     {
-      console.log( error );
+      console.log( err );
     }
-
   };
+
   return (
     <>
       <Jumbotron title={ `Hello ${ auth?.user?.name }` } subTitle="Dashboard" />
@@ -92,24 +89,19 @@ export default function AdminOrders ()
                     <tbody>
                       <tr>
                         <td>{ i + 1 }</td>
-
                         <td>
                           <Select
                             bordered={ false }
                             onChange={ ( value ) => handleChange( o._id, value ) }
-                            defaultValue={ ( o?.status ) }
+                            defaultValue={ o?.status }
                           >
-                            { status.map( ( s, i ) =>
-                              <Option
-                                key={ i } value={ s }
-                              >
+                            { status.map( ( s, i ) => (
+                              <Option key={ i } value={ s }>
                                 { s }
                               </Option>
-                            ) }
-
+                            ) ) }
                           </Select>
                         </td>
-
                         <td>{ o?.buyer?.name }</td>
                         <td>{ moment( o?.createdAt ).fromNow() }</td>
                         <td>{ o?.payment?.success ? "Success" : "Failed" }</td>
@@ -128,8 +120,6 @@ export default function AdminOrders ()
                 </div>
               );
             } ) }
-
-
           </div>
         </div>
       </div>

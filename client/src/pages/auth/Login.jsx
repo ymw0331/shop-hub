@@ -9,8 +9,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 export default function Login ()
 {
   //state
-  const [ email, setEmail ] = useState( 'wayne123@gmail.com' );
-  const [ password, setPassword ] = useState( 'wayne123' );
+  const [ email, setEmail ] = useState( '' );
+  const [ password, setPassword ] = useState( '' );
 
   //hook
   const [ auth, setAuth ] = useAuth();

@@ -1,23 +1,21 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../../context/auth';
-import { useCart } from '../../context/cart';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/auth";
+import { useCart } from "../../context/cart";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import DropIn from "braintree-web-drop-in-react";
-import { toast } from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export default function UserCartSidebar ()
 {
-  //state 
+  // context
+  const [ auth, setAuth ] = useAuth();
+  const [ cart, setCart ] = useCart();
+  // state
   const [ clientToken, setClientToken ] = useState( "" );
   const [ instance, setInstance ] = useState( "" );
   const [ loading, setLoading ] = useState( false );
-
-  //context
-  const [ auth, setAuth ] = useAuth();
-  const [ cart, setCart ] = useCart();
-
-  //hooks
+  // hooks
   const navigate = useNavigate();
 
   useEffect( () =>
@@ -26,22 +24,18 @@ export default function UserCartSidebar ()
     {
       getClientToken();
     }
-
   }, [ auth?.token ] );
-
 
   const getClientToken = async () =>
   {
     try
     {
-      const { data } = await axios.get( '/braintree/token' );
+      const { data } = await axios.get( "/braintree/token" );
       setClientToken( data.clientToken );
-
-    } catch ( error )
+    } catch ( err )
     {
-      console.log( error );
+      console.log( err );
     }
-
   };
 
   const cartTotal = () =>
@@ -51,114 +45,105 @@ export default function UserCartSidebar ()
     {
       total += item.price;
     } );
-    return total.toLocaleString( "en-SG", {
+    return total.toLocaleString( "en-US", {
       style: "currency",
-      currency: "SGD"
+      currency: "USD",
     } );
-
   };
 
-  const handlePurchase = async () =>
+  const handleBuy = async () =>
   {
-    setLoading( true );
     try
     {
+      setLoading( true );
       const { nonce } = await instance.requestPaymentMethod();
-      // console.log( "nonce =>", nonce );
-
-      const { data } = await axios.post( '/braintree/payment', {
-        nonce, cart
+      //   console.log("nonce => ", nonce);
+      const { data } = await axios.post( "/braintree/payment", {
+        nonce,
+        cart,
       } );
-
-      // console.log( "handled purcahse response =>", data );
+      //   console.log("handle buy response => ", data);
       setLoading( false );
       localStorage.removeItem( "cart" );
       setCart( [] );
-      navigate( '/dashboard/user/orders' );
-      toast.success( 'Payment successful' );
-
-    } catch ( error )
+      navigate( "/dashboard/user/orders" );
+      toast.success( "Payment successful" );
+    } catch ( err )
     {
-      console.log( error );
+      console.log( err );
+      toast.error( "Payment error: " + err );
+
       setLoading( false );
-
     }
-
   };
 
   return (
-    <div className='col-md-4'>
-
+    <div className="col-md-4 mb-5">
       <h4>Your cart summary</h4>
-      Total/Address/Payments
+      Total / Address / Payments
       <hr />
       <h6>Total: { cartTotal() }</h6>
-
-      {/* check if user has addres */ }
       { auth?.user?.address ? (
         <>
-          <div className='mb-3'>
+          <div className="mb-3">
             <hr />
-            <h4>Delivery Address:</h4>
+            <h4>Delivery address:</h4>
             <h5>{ auth?.user?.address }</h5>
-
           </div>
-          <button className='btn btn-outline-warning'
-            onClick={ () => navigate( '/dashboard/user/profile' ) }>
+          <button
+            className="btn btn-outline-warning"
+            onClick={ () => navigate( "/dashboard/user/profile" ) }
+          >
             Update address
           </button>
         </>
-
-      ) : <div className='mb-3'>
-        {/* check if user loggin */ }
-        { auth?.token ?
-          (
-            <button className='btn btn-outline-warning'
-              onClick={ () => navigate( '/dashboard/user/profile' ) }>Add delivery address
+      ) : (
+        <div className="mb-3">
+          { auth?.token ? (
+            <button
+              className="btn btn-outline-warning"
+              onClick={ () => navigate( "/dashboard/user/profile" ) }
+            >
+              Add delivery address
             </button>
-          )
-          :
-          (
-            <button className='btn btn-outline-danger mt-3'
+          ) : (
+            <button
+              className="btn btn-outline-danger mt-3"
               onClick={ () =>
-                navigate( '/login', {
-                  state: '/cart' //use location hook to redirect after login
-                } ) }>
+                navigate( "/login", {
+                  state: "/cart",
+                } )
+              }
+            >
               Login to checkout
             </button>
-          )
-        }
-
-      </div> }
-
-      <div className='mt-3 ms-1 mb-5'>
-
-
-        { !clientToken || !cart?.length ?
-          ''
-          :
+          ) }
+        </div>
+      ) }
+      <div className="mt-3">
+        { !clientToken || !cart?.length ? (
+          ""
+        ) : (
           <>
             <DropIn
               options={ {
                 authorization: clientToken,
                 paypal: {
-                  flow: "vault"
-                }
+                  flow: "vault",
+                },
               } }
               onInstance={ ( instance ) => setInstance( instance ) }
             />
-          </> }
-
-
-        <button
-          onClick={ handlePurchase }
-          className="btn btn-primary col-12 mt-2"
-          disabled={ !auth?.user?.address || !instance || loading }
-        >
-          { loading ? "Processing..." : "Purchase" }
-        </button>
+            <button
+              onClick={ handleBuy }
+              className="btn btn-primary col-12 mt-2"
+              disabled={ !auth?.user?.address || !instance || loading }
+            >
+              { loading ? "Processing..." : "Purchase" }
+            </button>
+          </>
+        ) }
       </div>
-
     </div>
   );
 }

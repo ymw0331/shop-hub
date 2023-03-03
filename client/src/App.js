@@ -24,13 +24,14 @@ import UserRoute from './components/routes/UserRoute.jsx';
 import AdminRoute from './components/routes/AdminRoute.jsx';
 
 
-
-
 const PageNotFound = () =>
 {
-  return ( <div className='d-flex justify-content-center align-items-center vh-100'>
-    404 | Page not found
-  </div> );
+  return (
+    <div
+      className='d-flex justify-content-center align-items-center vh-100'>
+      404 | Page not found
+    </div>
+  );
 };
 
 export default function App ()
