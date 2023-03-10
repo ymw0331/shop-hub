@@ -1,7 +1,7 @@
 
-## A FullStack E-commerce App that is implemented with Payment System (PayPal-BrainTree) with the following list of feactures
+## A FullStack E-commerce App that is implemented with Payment System (PayPal-BrainTree)
 
-### Features and highlights in this project
+### Features and highlights in this project:
 
 <ul>
 
