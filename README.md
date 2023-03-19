@@ -68,17 +68,6 @@ npm run start
 npm run start 
 ```
 
-## Folder Structure
-
-    client: Contains the React.js frontend codebase.
-    config: Contains server configuration files.
-    controllers: Contains server-side controllers for the routes.
-    middlewares: Contains middleware functions.
-    models: Contains MongoDB schema models.
-    routes: Contains server-side route handlers.
-    uploads: Contains uploaded images.
-    utils: Contains utility functions.
-
 
 ## Contributing
 Contributions are welcome! If you find any issues or want to contribute to the project, feel free to open a pull request or an issue.
