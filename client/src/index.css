@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* jumbotron color animation css */
 .jumbotron {
   width: 30wh;

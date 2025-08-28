@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "./context/auth.js";
 import { SearchProvider } from "./context/search.js";
 import { CartProvider } from './context/cart.js';
+import { CartDrawerProvider } from './context/cartDrawer.js';
 
 
 
@@ -15,7 +16,9 @@ root.render(
     <AuthProvider>
       <SearchProvider>
         <CartProvider>
-          <App />
+          <CartDrawerProvider>
+            <App />
+          </CartDrawerProvider>
         </CartProvider>
       </SearchProvider>
     </AuthProvider>

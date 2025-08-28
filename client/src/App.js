@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
-import Menu from './components/nav/Menu.jsx';
-import Home from './pages/Home';
+import ModernMenu from './components/nav/ModernMenu.jsx';
+import CartDrawer from './components/cart/CartDrawer.jsx';
+import { useCartDrawer } from './context/cartDrawer';
+import ModernHome from './pages/ModernHome';
 import Shop from './pages/Shop';
 import ProductView from './pages/ProductView.jsx';
 import Search from './pages/Search.jsx';
@@ -28,21 +30,23 @@ const PageNotFound = () =>
 {
   return (
     <div
-      className='d-flex justify-content-center align-items-center vh-100'>
-      404 | Page not found
+      className='flex justify-center items-center h-screen'>
+      <div className='text-2xl text-gray-600'>404 | Page not found</div>
     </div>
   );
 };
 
-export default function App ()
-{
+function AppContent() {
+  const [cartDrawerOpen, setCartDrawerOpen] = useCartDrawer();
+  
   return (
-    <BrowserRouter>
-      <Menu />
+    <>
+      <ModernMenu />
+      <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
       <Toaster position='top-right' />
       <Routes>
         <Route>
-          <Route path='/' element={ <Home /> } />
+          <Route path='/' element={ <ModernHome /> } />
           <Route path='/shop' element={ <Shop /> } />
           <Route path='/categories' element={ <CategoriesList /> } />
           <Route path='/category/:slug' element={ <CategoryView /> } />
@@ -75,7 +79,14 @@ export default function App ()
         </Route>
         <Route path='*' element={ <PageNotFound /> } />
       </Routes>
+    </>
+  );
+}
 
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }
