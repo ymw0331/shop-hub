@@ -1,16 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
-import ModernMenu from './components/nav/ModernMenu.jsx';
+import Menu from './components/nav/Menu.jsx';
 import CartDrawer from './components/cart/CartDrawer.jsx';
 import { useCartDrawer } from './context/cartDrawer';
-import ModernHome from './pages/ModernHome';
+import Home from './pages/Home';
 import Shop from './pages/Shop';
-import ProductView from './pages/ProductView.jsx';
-import Search from './pages/Search.jsx';
-import CategoriesList from './pages/CategoriesList.jsx';
-import CategoryView from './pages/CategoryView.jsx';
-import Cart from './pages/Cart.jsx';
+import ProductView from './pages/ProductView';
+import Search from './pages/Search';
+import CategoriesList from './pages/CategoriesList';
+import CategoryView from './pages/CategoryView';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
@@ -41,16 +42,17 @@ function AppContent() {
   
   return (
     <>
-      <ModernMenu />
+      <Menu />
       <CartDrawer isOpen={cartDrawerOpen} onClose={() => setCartDrawerOpen(false)} />
       <Toaster position='top-right' />
       <Routes>
         <Route>
-          <Route path='/' element={ <ModernHome /> } />
+          <Route path='/' element={ <Home /> } />
           <Route path='/shop' element={ <Shop /> } />
           <Route path='/categories' element={ <CategoriesList /> } />
           <Route path='/category/:slug' element={ <CategoryView /> } />
           <Route path='/cart' element={ <Cart /> } />
+          <Route path='/checkout' element={ <Checkout /> } />
           <Route path='/search' element={ <Search /> } />
           <Route path='/product/:slug' element={ <ProductView /> } />
           <Route path='/login' element={ <Login /> } />
