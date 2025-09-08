@@ -79,26 +79,26 @@ export default function SearchModal({ isOpen, onClose }) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl bg-white rounded-xl shadow-2xl z-50"
+            className="fixed top-20 left-1/2 transform -translate-x-1/2 w-full max-w-2xl bg-white dark:bg-gray-800 rounded-xl shadow-2xl z-50"
           >
             <div className="p-4">
               <form onSubmit={handleSubmit}>
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 dark:text-gray-500" />
                   <input
                     ref={inputRef}
                     type="text"
                     value={keyword}
                     onChange={(e) => setKeyword(e.target.value)}
                     placeholder="Search for products..."
-                    className="w-full pl-12 pr-12 py-4 text-lg border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="w-full pl-12 pr-12 py-4 text-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                   />
                   <button
                     type="button"
                     onClick={onClose}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
                   >
-                    <X className="h-5 w-5 text-gray-400" />
+                    <X className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                   </button>
                 </div>
               </form>
@@ -107,13 +107,13 @@ export default function SearchModal({ isOpen, onClose }) {
               {recentSearches.length > 0 && !keyword && (
                 <div className="mt-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h3 className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                    <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
                       <Clock className="h-4 w-4" />
                       Recent Searches
                     </h3>
                     <button
                       onClick={clearRecentSearches}
-                      className="text-xs text-gray-500 hover:text-gray-700"
+                      className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                     >
                       Clear all
                     </button>
@@ -123,7 +123,7 @@ export default function SearchModal({ isOpen, onClose }) {
                       <button
                         key={index}
                         onClick={() => handleRecentSearch(search)}
-                        className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors"
+                        className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full text-sm text-gray-700 dark:text-gray-300 transition-colors"
                       >
                         {search}
                       </button>
@@ -134,8 +134,8 @@ export default function SearchModal({ isOpen, onClose }) {
 
               {/* Popular Searches */}
               {!keyword && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <h3 className="text-sm font-medium text-gray-700 flex items-center gap-2 mb-2">
+                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                  <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-2">
                     <TrendingUp className="h-4 w-4" />
                     Popular Searches
                   </h3>
@@ -144,7 +144,7 @@ export default function SearchModal({ isOpen, onClose }) {
                       <button
                         key={term}
                         onClick={() => setKeyword(term)}
-                        className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-primary rounded-full text-sm transition-colors"
+                        className="px-3 py-1.5 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-primary dark:text-blue-400 rounded-full text-sm transition-colors"
                       >
                         {term}
                       </button>
