@@ -26,7 +26,7 @@ export default function HeroSection() {
   ];
 
   return (
-    <div className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 overflow-hidden">
+    <div className="relative bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       
@@ -64,11 +64,11 @@ export default function HeroSection() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6">
               Discover Amazing
               <span className="text-primary block">Products Today</span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8">
+            <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
               Shop the latest trends with unbeatable prices. Quality products, 
               fast delivery, and exceptional service.
             </p>
@@ -105,8 +105,8 @@ export default function HeroSection() {
                     {feature.icon}
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm text-gray-900">{feature.title}</h3>
-                    <p className="text-xs text-gray-600">{feature.description}</p>
+                    <h3 className="font-semibold text-sm text-gray-900 dark:text-gray-100">{feature.title}</h3>
+                    <p className="text-xs text-gray-600 dark:text-gray-400">{feature.description}</p>
                   </div>
                 </motion.div>
               ))}
@@ -131,7 +131,7 @@ export default function HeroSection() {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="absolute top-10 right-10 p-4 bg-white rounded-2xl shadow-xl"
+                className="absolute top-10 right-10 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
               >
                 <ShoppingBag className="h-12 w-12 text-primary" />
               </motion.div>
@@ -146,11 +146,11 @@ export default function HeroSection() {
                   ease: "easeInOut",
                   delay: 0.5
                 }}
-                className="absolute bottom-10 left-10 p-4 bg-white rounded-2xl shadow-xl"
+                className="absolute bottom-10 left-10 p-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl"
               >
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium">2,000+ Products</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">2,000+ Products</span>
                 </div>
               </motion.div>
 
@@ -179,10 +179,10 @@ export default function HeroSection() {
                   ease: "easeInOut",
                   delay: 1
                 }}
-                className="absolute top-1/3 right-1/4 bg-white p-4 rounded-xl shadow-lg"
+                className="absolute top-1/3 right-1/4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg"
               >
                 <p className="text-2xl font-bold text-primary">50K+</p>
-                <p className="text-sm text-gray-600">Happy Customers</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Happy Customers</p>
               </motion.div>
 
               <motion.div
@@ -195,10 +195,10 @@ export default function HeroSection() {
                   ease: "easeInOut",
                   delay: 1.5
                 }}
-                className="absolute bottom-1/3 left-1/4 bg-white p-4 rounded-xl shadow-lg"
+                className="absolute bottom-1/3 left-1/4 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg"
               >
                 <p className="text-2xl font-bold text-green-600">24/7</p>
-                <p className="text-sm text-gray-600">Customer Support</p>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Customer Support</p>
               </motion.div>
             </div>
           </motion.div>

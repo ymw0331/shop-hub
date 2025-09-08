@@ -83,30 +83,30 @@ export default function CartDrawer({ isOpen, onClose }) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 20, stiffness: 100 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full w-full max-w-md bg-white dark:bg-gray-800 shadow-2xl z-50 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-2">
                 <ShoppingCart className="h-5 w-5" />
-                <h2 className="text-lg font-semibold">Shopping Cart</h2>
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Shopping Cart</h2>
                 <Badge variant="primary" size="sm">{getItemCount()}</Badge>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
               >
-                <X className="h-5 w-5" />
+                <X className="h-5 w-5 text-gray-600 dark:text-gray-400" />
               </button>
             </div>
 
             {/* Free Shipping Progress */}
             {cartTotal > 0 && cartTotal < freeShippingThreshold && (
-              <div className="px-4 py-3 bg-blue-50 border-b">
-                <p className="text-sm text-gray-700 mb-2">
+              <div className="px-4 py-3 bg-blue-50 dark:bg-blue-900/30 border-b border-gray-200 dark:border-gray-700">
+                <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
                   Add {formatCurrency(amountForFreeShipping)} more for free shipping!
                 </p>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                   <div
                     className="bg-primary rounded-full h-2 transition-all duration-300"
                     style={{ width: `${freeShippingProgress}%` }}
@@ -116,8 +116,8 @@ export default function CartDrawer({ isOpen, onClose }) {
             )}
 
             {cartTotal >= freeShippingThreshold && (
-              <div className="px-4 py-3 bg-green-50 border-b">
-                <p className="text-sm text-green-700 font-medium">
+              <div className="px-4 py-3 bg-green-50 dark:bg-green-900/30 border-b border-gray-200 dark:border-gray-700">
+                <p className="text-sm text-green-700 dark:text-green-400 font-medium">
                   ✓ You qualify for free shipping!
                 </p>
               </div>
@@ -126,9 +126,9 @@ export default function CartDrawer({ isOpen, onClose }) {
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-4">
               {cart.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                  <ShoppingCart className="h-16 w-16 mb-4 text-gray-300" />
-                  <p className="text-lg font-medium mb-2">Your cart is empty</p>
+                <div className="flex flex-col items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                  <ShoppingCart className="h-16 w-16 mb-4 text-gray-300 dark:text-gray-600" />
+                  <p className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">Your cart is empty</p>
                   <p className="text-sm mb-4">Add items to get started</p>
                   <Button onClick={() => { onClose(); navigate('/shop'); }}>
                     Continue Shopping
@@ -147,7 +147,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, x: -100 }}
-                        className="flex gap-3 p-3 bg-gray-50 rounded-lg"
+                        className="flex gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
                       >
                         <img
                           src={`${process.env.REACT_APP_API}/product/photo/${item._id}`}
@@ -155,12 +155,12 @@ export default function CartDrawer({ isOpen, onClose }) {
                           className="w-20 h-20 object-cover rounded-md"
                         />
                         <div className="flex-1">
-                          <h3 className="font-medium text-sm line-clamp-1">{item.name}</h3>
-                          <p className="text-gray-600 text-sm mt-1">
+                          <h3 className="font-medium text-sm line-clamp-1 text-gray-900 dark:text-gray-100">{item.name}</h3>
+                          <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
                             {formatCurrency(item.price)}
                           </p>
                           {stock <= 5 && (
-                            <p className="text-xs text-orange-600 mt-1">
+                            <p className="text-xs text-orange-600 dark:text-orange-400 mt-1">
                               Only {stock} left in stock
                             </p>
                           )}
@@ -169,16 +169,16 @@ export default function CartDrawer({ isOpen, onClose }) {
                           <div className="flex items-center gap-2 mt-2">
                             <button
                               onClick={() => updateQuantity(item, itemQuantity - 1)}
-                              className="p-1 hover:bg-white rounded transition-colors"
+                              className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded transition-colors"
                             >
                               <Minus className="h-4 w-4" />
                             </button>
-                            <span className="px-3 py-1 bg-white rounded text-sm font-medium">
+                            <span className="px-3 py-1 bg-white dark:bg-gray-600 rounded text-sm font-medium text-gray-900 dark:text-gray-100">
                               {itemQuantity}
                             </span>
                             <button
                               onClick={() => updateQuantity(item, itemQuantity + 1)}
-                              className="p-1 hover:bg-white rounded transition-colors"
+                              className="p-1 hover:bg-white dark:hover:bg-gray-600 rounded transition-colors"
                               disabled={itemQuantity >= stock}
                             >
                               <Plus className="h-4 w-4" />
@@ -189,11 +189,11 @@ export default function CartDrawer({ isOpen, onClose }) {
                         <div className="flex flex-col items-end justify-between">
                           <button
                             onClick={() => removeFromCart(item._id)}
-                            className="p-1 hover:bg-red-50 text-red-500 rounded transition-colors"
+                            className="p-1 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 dark:text-red-400 rounded transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
-                          <p className="font-semibold text-sm">
+                          <p className="font-semibold text-sm text-gray-900 dark:text-gray-100">
                             {formatCurrency(item.price * itemQuantity)}
                           </p>
                         </div>
@@ -206,10 +206,10 @@ export default function CartDrawer({ isOpen, onClose }) {
 
             {/* Footer */}
             {cart.length > 0 && (
-              <div className="border-t p-4 space-y-3">
+              <div className="border-t border-gray-200 dark:border-gray-700 p-4 space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Subtotal</span>
-                  <span className="text-xl font-bold">{formatCurrency(cartTotal)}</span>
+                  <span className="text-gray-600 dark:text-gray-400">Subtotal</span>
+                  <span className="text-xl font-bold text-gray-900 dark:text-gray-100">{formatCurrency(cartTotal)}</span>
                 </div>
                 
                 <Button
