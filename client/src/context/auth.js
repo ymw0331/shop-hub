@@ -12,7 +12,12 @@ const AuthProvider = ( { children } ) =>
 
   //axios config
   axios.defaults.baseURL = process.env.REACT_APP_API;
-  axios.defaults.headers.common[ 'Authorization' ] = auth?.token;
+  
+  // Update axios headers when auth changes
+  useEffect( () =>
+  {
+    axios.defaults.headers.common[ 'Authorization' ] = auth?.token;
+  }, [ auth?.token ] );
 
   useEffect( () =>
   {
@@ -21,7 +26,7 @@ const AuthProvider = ( { children } ) =>
     {
       //grab data and put into state
       const parsed = JSON.parse( data );
-      setAuth( { ...auth, user: parsed.user, token: parsed.token } );
+      setAuth( { user: parsed.user, token: parsed.token } );
     }
   }, [] );
 

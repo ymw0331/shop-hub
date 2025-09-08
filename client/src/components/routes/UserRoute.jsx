@@ -20,9 +20,9 @@ export default function UserRoute ()
       if ( data.ok )
       {
         setOk( true );
-      } else (
-        setOk( false )
-      );
+      } else {
+        setOk( false );
+      }
     };
     if ( auth?.token )
       authCheck();

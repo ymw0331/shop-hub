@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Generate ShopHub Favicon</title>
+</head>
+<body style="background: #f0f0f0; padding: 20px; font-family: system-ui;">
+    <h1>ShopHub Favicon Generator</h1>
+    <p>Right-click and save each image with the specified filename in the public folder:</p>
+    
+    <!-- 16x16 -->
+    <div style="margin: 20px 0;">
+        <h3>favicon.ico (16x16)</h3>
+        <canvas id="canvas16" width="16" height="16" style="border: 1px solid #ccc; image-rendering: pixelated; width: 64px; height: 64px;"></canvas>
+    </div>
+    
+    <!-- 32x32 -->
+    <div style="margin: 20px 0;">
+        <h3>favicon-32x32.png</h3>
+        <canvas id="canvas32" width="32" height="32" style="border: 1px solid #ccc; image-rendering: pixelated; width: 64px; height: 64px;"></canvas>
+    </div>
+    
+    <!-- 192x192 -->
+    <div style="margin: 20px 0;">
+        <h3>logo192.png</h3>
+        <canvas id="canvas192" width="192" height="192" style="border: 1px solid #ccc;"></canvas>
+    </div>
+    
+    <!-- 512x512 -->
+    <div style="margin: 20px 0;">
+        <h3>logo512.png</h3>
+        <canvas id="canvas512" width="512" height="512" style="border: 1px solid #ccc; width: 256px; height: 256px;"></canvas>
+    </div>
+
+    <script>
+        function drawLogo(ctx, size) {
+            // Clear canvas with white background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, size, size);
+            
+            // Scale factor
+            const scale = size / 100;
+            
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#6366F1');
+            gradient.addColorStop(1, '#9333EA');
+            
+            ctx.strokeStyle = gradient;
+            ctx.fillStyle = gradient;
+            ctx.lineWidth = 4 * scale;
+            ctx.lineCap = 'round';
+            
+            // Draw shopping bag
+            ctx.beginPath();
+            ctx.moveTo(25 * scale, 35 * scale);
+            ctx.lineTo(25 * scale, 80 * scale);
+            ctx.quadraticCurveTo(25 * scale, 90 * scale, 35 * scale, 90 * scale);
+            ctx.lineTo(65 * scale, 90 * scale);
+            ctx.quadraticCurveTo(75 * scale, 90 * scale, 75 * scale, 80 * scale);
+            ctx.lineTo(75 * scale, 35 * scale);
+            ctx.stroke();
+            
+            // Draw handle
+            ctx.beginPath();
+            ctx.moveTo(35 * scale, 35 * scale);
+            ctx.quadraticCurveTo(35 * scale, 20 * scale, 50 * scale, 20 * scale);
+            ctx.quadraticCurveTo(65 * scale, 20 * scale, 65 * scale, 35 * scale);
+            ctx.stroke();
+            
+            // For smaller sizes, just draw a simplified S
+            if (size >= 32) {
+                ctx.lineWidth = 3 * scale;
+                
+                // Draw S
+                ctx.beginPath();
+                ctx.moveTo(40 * scale, 50 * scale);
+                ctx.quadraticCurveTo(40 * scale, 45 * scale, 45 * scale, 45 * scale);
+                ctx.lineTo(50 * scale, 45 * scale);
+                ctx.quadraticCurveTo(55 * scale, 45 * scale, 55 * scale, 50 * scale);
+                ctx.quadraticCurveTo(55 * scale, 55 * scale, 50 * scale, 55 * scale);
+                ctx.lineTo(45 * scale, 55 * scale);
+                ctx.quadraticCurveTo(40 * scale, 55 * scale, 40 * scale, 60 * scale);
+                ctx.quadraticCurveTo(40 * scale, 65 * scale, 45 * scale, 65 * scale);
+                ctx.lineTo(55 * scale, 65 * scale);
+                ctx.quadraticCurveTo(60 * scale, 65 * scale, 60 * scale, 60 * scale);
+                ctx.stroke();
+                
+                // Draw H
+                ctx.beginPath();
+                ctx.moveTo(40 * scale, 70 * scale);
+                ctx.lineTo(40 * scale, 85 * scale);
+                ctx.moveTo(55 * scale, 70 * scale);
+                ctx.lineTo(55 * scale, 85 * scale);
+                ctx.moveTo(40 * scale, 77.5 * scale);
+                ctx.lineTo(55 * scale, 77.5 * scale);
+                ctx.stroke();
+            } else {
+                // For 16x16, just draw a simple S
+                ctx.lineWidth = 2 * scale;
+                ctx.beginPath();
+                ctx.arc(50 * scale, 60 * scale, 10 * scale, Math.PI, 0, true);
+                ctx.stroke();
+            }
+        }
+        
+        // Draw on all canvases
+        drawLogo(document.getElementById('canvas16').getContext('2d'), 16);
+        drawLogo(document.getElementById('canvas32').getContext('2d'), 32);
+        drawLogo(document.getElementById('canvas192').getContext('2d'), 192);
+        drawLogo(document.getElementById('canvas512').getContext('2d'), 512);
+        
+        // Auto-download function
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Add download buttons
+        document.querySelectorAll('canvas').forEach(canvas => {
+            const button = document.createElement('button');
+            button.textContent = 'Download';
+            button.style.marginLeft = '10px';
+            button.onclick = () => {
+                const id = canvas.id;
+                const filename = id === 'canvas16' ? 'favicon.ico' :
+                               id === 'canvas32' ? 'favicon-32x32.png' :
+                               id === 'canvas192' ? 'logo192.png' : 'logo512.png';
+                downloadCanvas(id, filename);
+            };
+            canvas.parentElement.appendChild(button);
+        });
+    </script>
+</body>
+</html>

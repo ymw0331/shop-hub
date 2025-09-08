@@ -31,10 +31,10 @@ export default function Loading ( { path = "login" } )
 
   }, [ count ] );
 
-  return ( <div className='d-flex justify-content-center align-items-center'
-    style={ { height: "90vh" } } >
-
-    {/* Redirecting you in { count } seconds */ }
-    <img src={ LoadingGIF } alt="loading" style={ { width: "400px" } } />
-  </div> );
+  return ( 
+    <div className='flex justify-center items-center bg-white dark:bg-gray-900 min-h-[90vh]'>
+      {/* Redirecting you in { count } seconds */ }
+      <img src={ LoadingGIF } alt="loading" className="w-96 dark:opacity-80" />
+    </div> 
+  );
 }
