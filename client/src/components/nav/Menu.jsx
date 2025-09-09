@@ -20,7 +20,7 @@ import { useCart } from '../../context/cart';
 import { useCartDrawer } from '../../context/cartDrawer';
 import useCategory from '../../hooks/useCategory';
 import { cn } from '../../lib/utils';
-import Badge from '../ui/Badge';
+// Badge import removed - not used
 import SearchModal from './SearchModal';
 import { ShopHubLogoWithText } from '../logo/ShopHubLogo';
 import ThemeToggle from '../ui/ThemeToggle';

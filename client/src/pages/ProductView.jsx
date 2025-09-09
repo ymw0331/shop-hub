@@ -6,14 +6,14 @@ import { toast } from 'react-hot-toast';
 import moment from 'moment';
 import {
   ShoppingCart, Share2, Shield, Truck, Package,
-  ChevronRight, Minus, Plus, Check, X, Clock,
+  ChevronRight, Minus, Plus, Clock,
   ArrowLeft, ZoomIn, Tag, Info
 } from 'lucide-react';
 import PageContainer from '../components/layout/PageContainer';
 import ProductCard from '../components/cards/ProductCard';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
-import { Card, CardContent } from '../components/ui/Card';
+// import { Card, CardContent } from '../components/ui/Card';
 import Skeleton from '../components/ui/Skeleton';
 import { useCart } from '../context/cart';
 import { formatCurrency, calculateStock, isInStock } from '../lib/utils';

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { ArrowRight, ShoppingBag, Grid3x3, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowRight, Grid3x3, TrendingUp, Sparkles } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import HeroSection from '../components/hero/HeroSection';
 import ProductCard from '../components/cards/ProductCard';

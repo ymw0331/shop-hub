@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import axios from 'axios';
 import DropIn from 'braintree-web-drop-in-react';
 import { toast } from 'react-hot-toast';
@@ -115,7 +115,7 @@ export default function Checkout() {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
       
-      const { data } = await axios.post('/braintree/payment', {
+      await axios.post('/braintree/payment', {
         nonce,
         cart,
         deliveryInfo

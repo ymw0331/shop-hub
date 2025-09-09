@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { 
-  ChevronRight, Package, Filter, Grid, List, 
+  ChevronRight, Package, Grid, List, 
   ArrowLeft, Tag, TrendingUp, Clock
 } from 'lucide-react';
 import PageContainer from '../components/layout/PageContainer';

@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Search, X, Clock, TrendingUp } from 'lucide-react';
 import axios from 'axios';
 import { useSearch } from '../../context/search';
-import { cn } from '../../lib/utils';
+// import { cn } from '../../lib/utils';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SearchModal({ isOpen, onClose }) {
   const [keyword, setKeyword] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  // const [suggestions, setSuggestions] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useSearch();

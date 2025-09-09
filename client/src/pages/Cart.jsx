@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ShoppingCart, Trash2, Plus, Minus, ArrowLeft, 
-  ArrowRight, Tag, Truck, Shield, Gift, 
+  Truck, Shield, Gift, 
   CreditCard, Package, Sparkles
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
@@ -13,7 +13,7 @@ import PageContainer from '../components/layout/PageContainer';
 import PageHeader from '../components/layout/PageHeader';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
-import { Card, CardContent } from '../components/ui/Card';
+import { Card } from '../components/ui/Card';
 import { formatCurrency, calculateStock } from '../lib/utils';
 import { cn } from '../lib/utils';
 import usePageTitle from '../hooks/usePageTitle';

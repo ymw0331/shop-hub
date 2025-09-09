@@ -9,7 +9,7 @@ import PageContainer from '../components/layout/PageContainer';
 import PageHeader from '../components/layout/PageHeader';
 import ProductCard from '../components/cards/ProductCard';
 import Button from '../components/ui/Button';
-import { cn } from '../lib/utils';
+// import { cn } from '../lib/utils';
 import usePageTitle from '../hooks/usePageTitle';
 
 export default function Search() {
@@ -18,24 +18,24 @@ export default function Search() {
   const results = values?.results || [];
   const keyword = values?.keyword || '';
 
-  // Highlight search term in text
-  const highlightText = (text, highlight) => {
-    if (!highlight.trim()) {
-      return text;
-    }
-    const regex = new RegExp(`(${highlight})`, 'gi');
-    const parts = text.split(regex);
-    
-    return parts.map((part, index) =>
-      regex.test(part) ? (
-        <mark key={index} className="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">
-          {part}
-        </mark>
-      ) : (
-        part
-      )
-    );
-  };
+  // Highlight search term in text - currently unused
+  // const highlightText = (text, highlight) => {
+  //   if (!highlight.trim()) {
+  //     return text;
+  //   }
+  //   const regex = new RegExp(`(${highlight})`, 'gi');
+  //   const parts = text.split(regex);
+  //   
+  //   return parts.map((part, index) =>
+  //     regex.test(part) ? (
+  //       <mark key={index} className="bg-yellow-200 dark:bg-yellow-800 px-1 rounded">
+  //         {part}
+  //       </mark>
+  //     ) : (
+  //       part
+  //     )
+  //   );
+  // };
 
   const containerVariants = {
     hidden: { opacity: 0 },
