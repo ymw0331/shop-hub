@@ -12,7 +12,7 @@ const CartProvider = ( { children } ) =>
     if ( existingCart )
       setCart( JSON.parse( existingCart ) );
 
-  } );
+  }, [] );
 
   return (
     < CartContext.Provider value={ [ cart, setCart ] }>

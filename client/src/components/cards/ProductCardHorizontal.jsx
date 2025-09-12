@@ -16,57 +16,46 @@ export default function ProductCardHorizontal ( { p, remove = true } )
   };
 
   return (
-    <div
-      className='card mb-3'
-    // style={ { maxWidth: 540 } }
-    >
-      <div className='row g-0'>
-        <div className='col-md-4'>
+    <div className='rounded-lg shadow-md mb-3 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 overflow-hidden'>
+      <div className='flex'>
+        <div className='w-1/3 md:w-1/4'>
           <img
             src={ `${ process.env.REACT_APP_API }/product/photo/${ p._id }` }
             alt={ p.name }
-            style={ {
-              height: "150px",
-              width: "150px",
-              objectFit: "cover",
-              marginLeft: "-12px",
-              borderRopRightRadius: "0px",
-            } }
+            className='w-full h-36 object-cover'
           />
         </div>
 
-        <div className='col-md-8'>
-          <div className='card-body'>
-            <h5 className='card-title'>
+        <div className='flex-1 p-4'>
+          <div className='text-gray-900 dark:text-gray-100'>
+            <h5 className='text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1'>
               { p.name } { " " }
-              { p?.price?.toLocaleString( "en-SG", {
-                style: "currency",
-                currency: "SGD"
-              } ) }
+              <span className='text-indigo-600 dark:text-indigo-400'>
+                { p?.price?.toLocaleString( "en-SG", {
+                  style: "currency",
+                  currency: "SGD"
+                } ) }
+              </span>
             </h5>
-            <p className='card-text'>
+            <p className='text-sm text-gray-600 dark:text-gray-400 mb-3'>
               { `${ p.description?.substring( 0, 50 ) }...` }
             </p>
 
-
+            <div className='flex justify-between items-center'>
+              <p className='text-xs text-gray-500 dark:text-gray-400'>
+                Listed { moment( p.createdAt ).fromNow() }
+              </p>
+              { remove &&
+                ( <button 
+                    className='text-red-500 dark:text-red-400 text-sm font-medium hover:text-red-600 dark:hover:text-red-300 transition-colors cursor-pointer'
+                    onClick={ () => removeFromCart( p._id ) }
+                  >
+                    Remove
+                  </button> )
+              }
+            </div>
           </div>
         </div>
-
-        <div className='d-flex justify-content-between'>
-          <p className='card-text'>
-            <small className='text-muted'>
-              Listed { moment( p.createdAt ).fromNow() }
-            </small>
-          </p>
-          { remove &&
-            ( <p className=' text-danger mb-2 pointer'
-              onClick={ () => removeFromCart( p._id ) }
-            >
-              Remove
-            </p> )
-          }
-        </div>
-
       </div>
     </div>
   );

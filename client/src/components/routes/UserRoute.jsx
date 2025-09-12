@@ -7,7 +7,7 @@ import axios from 'axios';
 export default function UserRoute () 
 {
   //context
-  const [ auth, setAuth ] = useAuth();
+  const [ auth ] = useAuth();
 
   //state
   const [ ok, setOk ] = useState( false );
@@ -20,9 +20,9 @@ export default function UserRoute ()
       if ( data.ok )
       {
         setOk( true );
-      } else (
-        setOk( false )
-      );
+      } else {
+        setOk( false );
+      }
     };
     if ( auth?.token )
       authCheck();

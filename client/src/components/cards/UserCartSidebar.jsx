@@ -78,20 +78,20 @@ export default function UserCartSidebar ()
   };
 
   return (
-    <div className="col-md-4 mb-5">
-      <h4>Your cart summary</h4>
-      Total / Address / Payments
+    <div className="w-full md:w-1/3 mb-5 text-gray-900 dark:text-gray-100">
+      <h4 className="text-gray-900 dark:text-gray-100">Your cart summary</h4>
+      <span className="text-gray-600 dark:text-gray-400">Total / Address / Payments</span>
       <hr />
-      <h6>Total: { cartTotal() }</h6>
+      <h6 className="text-gray-900 dark:text-gray-100">Total: { cartTotal() }</h6>
       { auth?.user?.address ? (
         <>
           <div className="mb-3">
             <hr />
-            <h4>Delivery address:</h4>
-            <h5>{ auth?.user?.address }</h5>
+            <h4 className="text-gray-900 dark:text-gray-100">Delivery address:</h4>
+            <h5 className="text-gray-700 dark:text-gray-300">{ auth?.user?.address }</h5>
           </div>
           <button
-            className="btn btn-outline-warning"
+            className="px-4 py-2 border border-yellow-600 text-yellow-600 dark:text-yellow-400 dark:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/30 rounded-md font-medium transition-colors"
             onClick={ () => navigate( "/dashboard/user/profile" ) }
           >
             Update address
@@ -101,14 +101,14 @@ export default function UserCartSidebar ()
         <div className="mb-3">
           { auth?.token ? (
             <button
-              className="btn btn-outline-warning"
+              className="px-4 py-2 border border-yellow-600 text-yellow-600 dark:text-yellow-400 dark:border-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/30 rounded-md font-medium transition-colors"
               onClick={ () => navigate( "/dashboard/user/profile" ) }
             >
               Add delivery address
             </button>
           ) : (
             <button
-              className="btn btn-outline-danger mt-3"
+              className="px-4 py-2 mt-3 border border-red-600 text-red-600 dark:text-red-400 dark:border-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-md font-medium transition-colors"
               onClick={ () =>
                 navigate( "/login", {
                   state: "/cart",
@@ -136,7 +136,7 @@ export default function UserCartSidebar ()
             />
             <button
               onClick={ handleBuy }
-              className="btn btn-primary col-12 mt-2"
+              className="w-full px-4 py-2 mt-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={ !auth?.user?.address || !instance || loading }
             >
               { loading ? "Processing..." : "Purchase" }

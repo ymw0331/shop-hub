@@ -6,19 +6,25 @@ import reportWebVitals from './reportWebVitals';
 import { AuthProvider } from "./context/auth.js";
 import { SearchProvider } from "./context/search.js";
 import { CartProvider } from './context/cart.js';
+import { CartDrawerProvider } from './context/cartDrawer.js';
+import { ThemeProvider } from './context/theme.js';
 
 
 
 const root = ReactDOM.createRoot( document.getElementById( 'root' ) );
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <SearchProvider>
-        <CartProvider>
-          <App />
-        </CartProvider>
-      </SearchProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <SearchProvider>
+          <CartProvider>
+            <CartDrawerProvider>
+              <App />
+            </CartDrawerProvider>
+          </CartProvider>
+        </SearchProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 
