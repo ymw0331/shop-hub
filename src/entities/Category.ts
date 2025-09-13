@@ -28,8 +28,4 @@ export class Category implements ICategory {
     })
     products?: Product[];
 
-    // MongoDB compatibility
-    get _id(): string {
-        return this.id;
-    }
 }

@@ -19,7 +19,6 @@
 
 export interface IUser {
     id: string;
-    _id?: string; // For MongoDB compatibility in responses
     name: string;
     email: string;
     password: string;
@@ -32,7 +31,6 @@ export interface IUser {
 
 export interface ICategory {
     id: string;
-    _id?: string; // For MongoDB compatibility
     name: string;
     slug: string;
     products?: IProduct[];
@@ -40,7 +38,6 @@ export interface ICategory {
 
 export interface IProduct {
     id: string;
-    _id?: string; // For MongoDB compatibility
     name: string;
     slug: string;
     description: string;
@@ -58,7 +55,6 @@ export interface IProduct {
 
 export interface IOrder {
     id: string;
-    _id?: string; // For MongoDB compatibility
     products: IProduct[];
     payment?: any; // JSON object for payment details
     buyer: IUser;

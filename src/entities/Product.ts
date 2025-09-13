@@ -70,8 +70,4 @@ export class Product implements IProduct {
     @UpdateDateColumn({ type: "timestamp" })
     updatedAt: Date;
 
-    // MongoDB compatibility
-    get _id(): string {
-        return this.id;
-    }
 }

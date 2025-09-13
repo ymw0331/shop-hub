@@ -60,9 +60,6 @@ export class Order implements IOrder {
     @UpdateDateColumn({ type: "timestamp" })
     updatedAt: Date;
 
-    get _id(): string {
-        return this.id;
-    }
 }
 
 

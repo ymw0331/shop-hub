@@ -45,8 +45,4 @@ export class User implements IUser {
     @UpdateDateColumn({ type: "timestamp" })
     updatedAt: Date;
 
-    // Industry Standard: Virtual property for MongoDB compatibility
-    get _id(): string {
-        return this.id;
-    }
 }
