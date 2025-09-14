@@ -10,7 +10,11 @@
     "typeorm": "tsx ./node_modules/typeorm/cli.js -d src/database/data-source.ts",
     "migrate-data": "tsx scripts/migrate-data.ts",
     "db:clear": "tsx src/scripts/clear-database.ts",
-    "db:seed": "tsx src/scripts/seed-database.ts"
+    "db:seed": "tsx src/scripts/seed-database.ts",
+    "db:images": "tsx src/scripts/populate-images.ts",
+    "db:images:google": "tsx src/scripts/populate-images-google.ts",
+    "db:images:unsplash": "tsx src/scripts/populate-images-unsplash.ts",
+    "db:images:picsum": "tsx src/scripts/populate-images-picsum.ts"
   },
   "keywords": [
     "ecommerce",
@@ -22,6 +26,7 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
+    "axios": "^1.12.2",
     "bcrypt": "^5.1.0",
     "braintree": "^3.12.0",
     "cors": "^2.8.5",
@@ -31,7 +36,11 @@
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
     "pg": "^8.11.0",
+    "puppeteer": "^24.20.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
     "reflect-metadata": "^0.1.13",
+    "sharp": "^0.34.3",
     "slugify": "^1.6.5",
     "typeorm": "^0.3.0",
     "winston": "^3.17.0",

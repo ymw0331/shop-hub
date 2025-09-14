@@ -78,9 +78,9 @@ app.use('/api', authRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
 
-// Serve uploaded photos statically
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-logger.info('Static file serving configured', { path: '/uploads' });
+// Serve uploaded photos statically under /api
+app.use('/api/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
+logger.info('Static file serving configured', { path: '/api/uploads' });
 
 startServer();
 
