@@ -54,7 +54,7 @@ export default function ProductView() {
   const loadRelated = async (productId, categoryId) => {
     try {
       const { data } = await axios.get(
-        `/related-products/${productId}/${categoryId}`
+        `/products/related/${productId}/${categoryId}`
       );
       setRelated(data);
     } catch (err) {
@@ -180,7 +180,7 @@ export default function ProductView() {
                 </Badge>
               )}
               <img
-                src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
+                src={product.photoPath ? `${process.env.REACT_APP_API}${product.photoPath}` : '/placeholder.png'}
                 alt={product.name}
                 className={cn(
                   "w-full h-[500px] object-cover transition-transform duration-300",
@@ -212,7 +212,7 @@ export default function ProductView() {
                 )}
               >
                 <img
-                  src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
+                  src={product.photoPath ? `${process.env.REACT_APP_API}${product.photoPath}` : '/placeholder.png'}
                   alt={`${product.name} ${i + 1}`}
                   className="w-full h-20 object-cover opacity-70"
                 />
