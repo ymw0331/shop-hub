@@ -44,7 +44,7 @@ export class Order implements IOrder {
     @JoinColumn({ name: "buyer_id" })
     buyer: User;
 
-    @Column({ name: "buyer_id" })
+    @Column({ name: "buyer_id", type: "uuid" })
     buyerId: string;
 
     @Column({

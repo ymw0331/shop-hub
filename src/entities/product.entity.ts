@@ -58,7 +58,7 @@ export class Product implements IProduct {
     @JoinColumn({ name: "category_id" })
     category: Category;
 
-    @Column({ name: "category_id" })
+    @Column({ name: "category_id", type: "uuid" })
     categoryId: string;
 
     @ManyToMany(() => Order, (order: Order) => order.products)
