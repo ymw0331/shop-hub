@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(npm update:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(git add:*)",
+      "Bash(npm start)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(git commit:*)",
+      "Bash(python3:*)",
+      "Bash(psql:*)"
     ],
     "deny": [],
     "ask": []
