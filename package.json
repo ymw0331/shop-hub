@@ -8,7 +8,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "typeorm": "tsx ./node_modules/typeorm/cli.js -d src/database/data-source.ts",
-    "migrate-data": "tsx scripts/migrate-data.ts"
+    "migrate-data": "tsx scripts/migrate-data.ts",
+    "db:clear": "tsx src/scripts/clear-database.ts",
+    "db:seed": "tsx src/scripts/seed-database.ts"
   },
   "keywords": [
     "ecommerce",
