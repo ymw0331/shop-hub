@@ -148,6 +148,14 @@ export class ProductService {
         }
         return product;
     }
+    // Business Logic: Get Product by ID
+    async getProductById(id) {
+        const product = await this.productRepository.findById(id);
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        return product;
+    }
     // Business Logic: Search Products with Filters
     async searchProducts(filters, page = 1, limit = 10) {
         let products = [];

@@ -9,7 +9,7 @@ if ! pg_isready -h localhost -p 5432; then
     exit 1
 fi
 
-# Create database if it doesn't exist
+# Create database if it doesn't existz
 createdb ecommerce_db 2>/dev/null || echo "📝 Database already exists"
 
 # Copy environment template
