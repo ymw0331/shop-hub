@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 // src/entities/Order.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinColumn, JoinTable, Index } from "typeorm";
 import { OrderStatus } from "../types/index.js";
-import { User } from "./User.js";
-import { Product } from "./Product.js";
+import { User } from "./user.entity.js";
+import { Product } from "./product.entity.js";
 let Order = class Order {
 };
 __decorate([

@@ -1,5 +1,5 @@
-import { BaseRepository } from "./BaseRepository.js";
-import { Category } from "../entities/Category.js";
+import { BaseRepository } from "./base.repository.js";
+import { Category } from "../entities/category.entity.js";
 export class CategoryRepository extends BaseRepository {
     constructor() {
         super(Category);

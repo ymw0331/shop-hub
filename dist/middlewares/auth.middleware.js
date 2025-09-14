@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { UserRepository } from "../repositories/UserRepository.js";
+import { UserRepository } from "../repositories/user.repository.js";
 const userRepository = new UserRepository();
 export const requireSignin = (req, res, next) => {
     const token = req.headers.authorization?.split(" ")[1];

@@ -9,8 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 // src/entities/Product.ts
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinColumn, Index } from "typeorm";
-import { Category } from "./Category.js";
-import { Order } from "./Order.js";
+import { Category } from "./category.entity.js";
+import { Order } from "./order.entity.js";
 let Product = class Product {
 };
 __decorate([

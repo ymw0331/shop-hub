@@ -1,5 +1,5 @@
-import { BaseRepository } from "./BaseRepository.js";
-import { User } from "../entities/User.js";
+import { BaseRepository } from "./base.repository.js";
+import { User } from "../entities/user.entity.js";
 export class UserRepository extends BaseRepository {
     constructor() {
         super(User);

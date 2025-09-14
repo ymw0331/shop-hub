@@ -1,8 +1,8 @@
 // src/repositories/OrderRepository.ts
 import { In } from "typeorm";
-import { BaseRepository } from "./BaseRepository.js";
-import { Order } from "../entities/Order.js";
-import { Product } from "../entities/Product.js";
+import { BaseRepository } from "./base.repository.js";
+import { Order } from "../entities/order.entity.js";
+import { Product } from "../entities/product.entity.js";
 import { OrderStatus } from "../types/index.js";
 export class OrderRepository extends BaseRepository {
     constructor() {

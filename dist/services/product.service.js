@@ -1,8 +1,8 @@
 // src/services/ProductService.ts
-import { ProductRepository } from "../repositories/ProductRepository.js";
-import { CategoryRepository } from "../repositories/CategoryRepository.js";
-import { OrderRepository } from "../repositories/OrderRepository.js";
-import { UserRepository } from "../repositories/UserRepository.js";
+import { ProductRepository } from "../repositories/product.repository.js";
+import { CategoryRepository } from "../repositories/category.repository.js";
+import { OrderRepository } from "../repositories/order.repository.js";
+import { UserRepository } from "../repositories/user.repository.js";
 import slugify from "slugify";
 import fs from "fs";
 import path from "path";

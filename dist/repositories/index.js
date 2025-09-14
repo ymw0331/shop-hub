@@ -1,6 +1,6 @@
 // src/repositories/index.ts
-export { BaseRepository } from "./BaseRepository.js";
-export { UserRepository } from "./UserRepository.js";
-export { CategoryRepository } from "./CategoryRepository.js";
-export { ProductRepository } from "./ProductRepository.js";
-export { OrderRepository } from "./OrderRepository.js";
+export { BaseRepository } from "./base.repository.js";
+export { UserRepository } from "./user.repository.js";
+export { CategoryRepository } from "./category.repository.js";
+export { ProductRepository } from "./product.repository.js";
+export { OrderRepository } from "./order.repository.js";

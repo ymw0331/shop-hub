@@ -1,7 +1,7 @@
 // src/repositories/ProductRepository.ts
 import { Between } from "typeorm";
-import { BaseRepository } from "./BaseRepository.js";
-import { Product } from "../entities/Product.js";
+import { BaseRepository } from "./base.repository.js";
+import { Product } from "../entities/product.entity.js";
 export class ProductRepository extends BaseRepository {
     constructor() {
         super(Product);

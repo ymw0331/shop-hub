@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "description": "Ecommerce API with NodeJS and PostgreSQL",
   "main": "dist/index.js",
-  "type": "module",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "ts-node-esm src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "typeorm": "ts-node-esm ./node_modules/typeorm/cli.js"
+    "typeorm": "tsx ./node_modules/typeorm/cli.js -d src/database/data-source.ts"
   },
   "keywords": [
     "ecommerce",
