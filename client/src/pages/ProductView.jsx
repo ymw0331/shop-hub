@@ -42,7 +42,7 @@ export default function ProductView() {
     try {
       const { data } = await axios.get(`/product/${params.slug}`);
       setProduct(data);
-      loadRelated(data._id, data.category._id);
+      loadRelated(data.id, data.category.id);
     } catch (error) {
       console.error(error);
       toast.error("Failed to load product");
@@ -63,7 +63,7 @@ export default function ProductView() {
   };
 
   const handleAddToCart = () => {
-    const existingItem = cart.find(item => item._id === product._id);
+    const existingItem = cart.find(item => item.id === product.id);
     const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
     const stock = calculateStock(product.quantity, product.sold);
     
@@ -75,7 +75,7 @@ export default function ProductView() {
     let updatedCart = [...cart];
     if (existingItem) {
       updatedCart = cart.map(item =>
-        item._id === product._id
+        item.id === product.id
           ? { ...item, quantity: item.quantity + quantity }
           : item
       );
@@ -180,7 +180,7 @@ export default function ProductView() {
                 </Badge>
               )}
               <img
-                src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+                src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
                 alt={product.name}
                 className={cn(
                   "w-full h-[500px] object-cover transition-transform duration-300",
@@ -212,7 +212,7 @@ export default function ProductView() {
                 )}
               >
                 <img
-                  src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+                  src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
                   alt={`${product.name} ${i + 1}`}
                   className="w-full h-20 object-cover opacity-70"
                 />
@@ -353,7 +353,7 @@ export default function ProductView() {
           <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-2">
               <Tag className="h-4 w-4" />
-              <span>SKU: {product._id?.substring(0, 8).toUpperCase()}</span>
+              <span>SKU: {product.id?.substring(0, 8).toUpperCase()}</span>
             </div>
             <div className="flex items-center gap-2">
               <Info className="h-4 w-4" />
@@ -371,7 +371,7 @@ export default function ProductView() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
             {related.slice(0, 5).map((p) => (
-              <ProductCard key={p._id} p={p} />
+              <ProductCard key={p.id} p={p} />
             ))}
           </div>
         </div>

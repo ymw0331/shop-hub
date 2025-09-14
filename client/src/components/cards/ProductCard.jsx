@@ -73,7 +73,7 @@ export default function ProductCard({ p: product, viewMode }) {
         
         {!imageError ? (
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+            src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
             alt={product.name}
             onLoad={() => setImageLoading(false)}
             onError={() => {

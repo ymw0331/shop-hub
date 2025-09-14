@@ -74,7 +74,7 @@ export default function UserOrders() {
     >
       <div className="flex-shrink-0">
         <img
-          src={`${process.env.REACT_APP_API}/product/photo/${product._id}`}
+          src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
           alt={product.name}
           className="w-16 h-16 object-cover rounded-lg shadow-md"
           onError={(e) => {
@@ -149,7 +149,7 @@ export default function UserOrders() {
                   
                   return (
                     <motion.div
-                      key={order._id}
+                      key={order.id}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: orderIndex * 0.1 }}
@@ -239,7 +239,7 @@ export default function UserOrders() {
                             <div className="grid gap-4">
                               {order.products?.map((product, productIndex) => (
                                 <ProductCard 
-                                  key={`${order._id}-${product._id}-${productIndex}`} 
+                                  key={`${order.id}-${product.id}-${productIndex}`} 
                                   product={product} 
                                   index={productIndex}
                                 />

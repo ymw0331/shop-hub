@@ -62,7 +62,7 @@ export default function CategoriesList() {
       
       data.forEach(product => {
         if (product.category) {
-          const categoryId = product.category._id;
+          const categoryId = product.category.id;
           counts[categoryId] = (counts[categoryId] || 0) + 1;
           total++;
         }
@@ -133,7 +133,7 @@ export default function CategoriesList() {
           
           return (
             <motion.div
-              key={category._id}
+              key={category.id}
               variants={itemVariants}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -161,7 +161,7 @@ export default function CategoriesList() {
                       </div>
                       {/* Product Count Badge */}
                       <div className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-medium">
-                        {categoryCounts[category._id] || 0} items
+                        {categoryCounts[category.id] || 0} items
                       </div>
                     </div>
                     

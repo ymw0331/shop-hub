@@ -16,7 +16,7 @@ export default function CartDrawer({ isOpen, onClose }) {
 
   const updateQuantity = (product, newQuantity) => {
     if (newQuantity <= 0) {
-      removeFromCart(product._id);
+      removeFromCart(product.id);
       return;
     }
 
@@ -27,7 +27,7 @@ export default function CartDrawer({ isOpen, onClose }) {
     }
 
     const updatedCart = cart.map(item => {
-      if (item._id === product._id) {
+      if (item.id === product.id) {
         return { ...item, cartQuantity: newQuantity };
       }
       return item;
@@ -38,7 +38,7 @@ export default function CartDrawer({ isOpen, onClose }) {
   };
 
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter(item => item._id !== productId);
+    const updatedCart = cart.filter(item => item.id !== productId);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     toast.success('Item removed from cart');
@@ -142,7 +142,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                     
                     return (
                       <motion.div
-                        key={item._id}
+                        key={item.id}
                         layout
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                         className="flex gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
                       >
                         <img
-                          src={`${process.env.REACT_APP_API}/product/photo/${item._id}`}
+                          src={`${process.env.REACT_APP_API}/product/photo/${item.id}`}
                           alt={item.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />
@@ -188,7 +188,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                         
                         <div className="flex flex-col items-end justify-between">
                           <button
-                            onClick={() => removeFromCart(item._id)}
+                            onClick={() => removeFromCart(item.id)}
                             className="p-1 hover:bg-red-50 dark:hover:bg-red-900/30 text-red-500 dark:text-red-400 rounded transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />

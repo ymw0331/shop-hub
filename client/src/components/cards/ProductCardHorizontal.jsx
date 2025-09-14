@@ -9,7 +9,7 @@ export default function ProductCardHorizontal ( { p, remove = true } )
   const removeFromCart = async ( productId ) =>
   {
     let myCart = [ ...cart ];
-    let index = myCart.findIndex( ( item ) => item._id === productId );
+    let index = myCart.findIndex( ( item ) => item.id === productId );
     myCart.splice( index, 1 );
     setCart( myCart );
     localStorage.setItem( 'cart', JSON.stringify( myCart ) );
@@ -20,7 +20,7 @@ export default function ProductCardHorizontal ( { p, remove = true } )
       <div className='flex'>
         <div className='w-1/3 md:w-1/4'>
           <img
-            src={ `${ process.env.REACT_APP_API }/product/photo/${ p._id }` }
+            src={ `${ process.env.REACT_APP_API }/product/photo/${ p.id }` }
             alt={ p.name }
             className='w-full h-36 object-cover'
           />
@@ -48,7 +48,7 @@ export default function ProductCardHorizontal ( { p, remove = true } )
               { remove &&
                 ( <button 
                     className='text-red-500 dark:text-red-400 text-sm font-medium hover:text-red-600 dark:hover:text-red-300 transition-colors cursor-pointer'
-                    onClick={ () => removeFromCart( p._id ) }
+                    onClick={ () => removeFromCart( p.id ) }
                   >
                     Remove
                   </button> )

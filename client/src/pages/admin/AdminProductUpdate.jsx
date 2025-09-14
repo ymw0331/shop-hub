@@ -71,10 +71,10 @@ export default function AdminProductUpdate ()
       setName( data.name );
       setDescription( data.description );
       setPrice( data.price );
-      setCategory( data.category._id );
+      setCategory( data.category.id );
       setShipping( data.shipping );
       setQuantity( data.quantity );
-      setId( data._id );
+      setId( data.id );
     } catch ( err )
     {
       console.log( err );
@@ -278,7 +278,7 @@ export default function AdminProductUpdate ()
                         >
                           <option value="">Choose category</option>
                           {sortedCategories?.map((c) => (
-                            <option key={c._id} value={c._id}>
+                            <option key={c.id} value={c.id}>
                               {c.name}
                             </option>
                           ))}

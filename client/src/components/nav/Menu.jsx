@@ -112,7 +112,7 @@ export default function Menu() {
                       </NavLink>
                       {categories?.map((c) => (
                         <NavLink
-                          key={c._id}
+                          key={c.id}
                           to={`/category/${c.slug}`}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary"
                           onClick={() => setCategoryDropdownOpen(false)}

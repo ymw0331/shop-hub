@@ -28,7 +28,7 @@ export default function Cart() {
 
   const updateQuantity = (productId, action) => {
     const updatedCart = cart.map(item => {
-      if (item._id === productId) {
+      if (item.id === productId) {
         const stock = calculateStock(item.quantity, item.sold);
         let newQuantity = item.cartQuantity || 1;
         
@@ -48,7 +48,7 @@ export default function Cart() {
   };
 
   const removeFromCart = (productId) => {
-    const updatedCart = cart.filter(item => item._id !== productId);
+    const updatedCart = cart.filter(item => item.id !== productId);
     setCart(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     toast.success('Item removed from cart');
@@ -153,7 +153,7 @@ export default function Cart() {
             <AnimatePresence>
               {cart.map((item) => (
                 <motion.div
-                  key={item._id}
+                  key={item.id}
                   layout
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -166,7 +166,7 @@ export default function Cart() {
                       <Link to={`/product/${item.slug}`}>
                         <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
                           <img
-                            src={`${process.env.REACT_APP_API}/product/photo/${item._id}`}
+                            src={`${process.env.REACT_APP_API}/product/photo/${item.id}`}
                             alt={item.name}
                             className="w-full h-full object-cover hover:scale-105 transition-transform"
                           />
@@ -187,7 +187,7 @@ export default function Cart() {
                             </p>
                           </div>
                           <button
-                            onClick={() => removeFromCart(item._id)}
+                            onClick={() => removeFromCart(item.id)}
                             className="p-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors group"
                           >
                             <Trash2 className="h-4 w-4 text-gray-400 dark:text-gray-500 group-hover:text-red-500" />
@@ -198,7 +198,7 @@ export default function Cart() {
                           {/* Quantity Controls */}
                           <div className="flex items-center gap-2">
                             <button
-                              onClick={() => updateQuantity(item._id, 'decrease')}
+                              onClick={() => updateQuantity(item.id, 'decrease')}
                               disabled={(item.cartQuantity || 1) <= 1}
                               className={cn(
                                 "p-1 rounded-lg transition-colors",
@@ -213,7 +213,7 @@ export default function Cart() {
                               {item.cartQuantity || 1}
                             </span>
                             <button
-                              onClick={() => updateQuantity(item._id, 'increase')}
+                              onClick={() => updateQuantity(item.id, 'increase')}
                               disabled={(item.cartQuantity || 1) >= calculateStock(item.quantity, item.sold)}
                               className={cn(
                                 "p-1 rounded-lg transition-colors",

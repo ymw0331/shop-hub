@@ -172,7 +172,7 @@ export default function UserDashboard() {
                   ) : stats.recentOrders.length > 0 ? (
                     <div className="space-y-4">
                       {stats.recentOrders.map((order, index) => (
-                        <div key={order._id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div key={order.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
                           <div className="flex items-center gap-3">
                             <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-full">
                               <Package className="w-4 h-4 text-indigo-600" />

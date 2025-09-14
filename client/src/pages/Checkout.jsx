@@ -347,7 +347,7 @@ export default function Checkout() {
               {/* Cart Items */}
               <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                 {cart?.map((item) => (
-                  <div key={item._id} className="flex justify-between items-start">
+                  <div key={item.id} className="flex justify-between items-start">
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
                         {item.name}

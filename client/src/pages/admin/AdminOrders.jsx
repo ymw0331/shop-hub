@@ -207,10 +207,10 @@ export default function AdminOrders ()
                 ) : (
                   <div className="space-y-6">
                     { orders?.map( ( order, index ) => {
-                      const isExpanded = expandedOrders.has( order._id );
+                      const isExpanded = expandedOrders.has( order.id );
                       return (
                         <motion.div
-                          key={ order._id }
+                          key={ order.id }
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -219,7 +219,7 @@ export default function AdminOrders ()
                           {/* Order Header */}
                           <div 
                             className="p-6 cursor-pointer"
-                            onClick={ () => toggleOrderExpansion( order._id ) }
+                            onClick={ () => toggleOrderExpansion( order.id ) }
                           >
                             <div className="flex items-center justify-between">
                               <div className="flex items-center space-x-4">
@@ -228,7 +228,7 @@ export default function AdminOrders ()
                                 </div>
                                 <div>
                                   <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-                                    Order #{ order._id.slice( -6 ).toUpperCase() }
+                                    Order #{ order.id.slice( -6 ).toUpperCase() }
                                   </h3>
                                   <p className="text-sm text-gray-500 dark:text-gray-400">
                                     { order?.products?.length } { order?.products?.length === 1 ? 'item' : 'items' }
@@ -285,7 +285,7 @@ export default function AdminOrders ()
                                     </label>
                                     <Select
                                       value={ order?.status }
-                                      onChange={ ( e ) => handleChange( order._id, e.target.value ) }
+                                      onChange={ ( e ) => handleChange( order.id, e.target.value ) }
                                       className="max-w-xs"
                                     >
                                       { status.map( ( s, i ) => (

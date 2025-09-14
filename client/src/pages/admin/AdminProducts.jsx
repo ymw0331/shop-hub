@@ -134,7 +134,7 @@ export default function AdminProducts ()
                   <div className="space-y-4">
                     {filteredProducts.map((product, index) => (
                       <motion.div
-                        key={product._id}
+                        key={product.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -149,7 +149,7 @@ export default function AdminProducts ()
                               <div className="md:col-span-1">
                                 <div className="relative h-48 md:h-full overflow-hidden rounded-l-lg">
                                   <img
-                                    src={`${process.env.REACT_APP_API}/product/photo/${product?._id}`}
+                                    src={`${process.env.REACT_APP_API}/product/photo/${product?.id}`}
                                     alt={product.name}
                                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                   />

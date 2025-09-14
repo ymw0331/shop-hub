@@ -151,7 +151,7 @@ export default function Home() {
               ) : (
                 <div className="grid grid-cols-1 gap-6">
                   {products?.slice(0, 3).map((p) => (
-                    <ProductCard key={p._id} p={p} />
+                    <ProductCard key={p.id} p={p} />
                   ))}
                 </div>
               )}
@@ -185,7 +185,7 @@ export default function Home() {
               ) : (
                 <div className="grid grid-cols-1 gap-6">
                   {productSortedBySold?.slice(0, 3).map((p) => (
-                    <ProductCard key={p._id} p={p} />
+                    <ProductCard key={p.id} p={p} />
                   ))}
                 </div>
               )}

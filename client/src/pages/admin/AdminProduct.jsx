@@ -225,7 +225,7 @@ export default function AdminProduct ()
                         >
                           <option value="">Choose category</option>
                           {sortedCategories?.map((c) => (
-                            <option key={c._id} value={c._id}>
+                            <option key={c.id} value={c.id}>
                               {c.name}
                             </option>
                           ))}

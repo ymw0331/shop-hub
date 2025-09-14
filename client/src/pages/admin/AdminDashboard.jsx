@@ -77,7 +77,7 @@ export default function AdminDashboard() {
       }, 0);
 
       // Get unique users from orders
-      const uniqueUsers = new Set(orders.map(order => order.buyer?._id).filter(Boolean));
+      const uniqueUsers = new Set(orders.map(order => order.buyer?.id).filter(Boolean));
 
       // Get recent 5 orders for activities
       const recentOrders = orders.slice(0, 5);
@@ -134,7 +134,7 @@ export default function AdminDashboard() {
 
   // Convert real orders to activities
   const recentActivities = stats.recentOrders.map((order, index) => ({
-    id: order._id || index,
+    id: order.id || index,
     type: 'order',
     message: `Order from ${order.buyer?.name || 'Guest'}`,
     time: moment(order.createdAt).fromNow(),

@@ -184,10 +184,10 @@ export default function Shop() {
         <div className="space-y-2 max-h-60 overflow-y-auto">
           {categories?.map(c => (
             <Checkbox
-              key={c._id}
+              key={c.id}
               label={c.name}
-              checked={checked.includes(c._id)}
-              onChange={(e) => handleChecked(e.target.checked, c._id)}
+              checked={checked.includes(c.id)}
+              onChange={(e) => handleChecked(e.target.checked, c.id)}
             />
           ))}
         </div>
@@ -202,7 +202,7 @@ export default function Shop() {
         <div className="space-y-2">
           {prices?.map(p => (
             <Radio
-              key={p._id}
+              key={p.id}
               name="price"
               label={p.name}
               value={p.array}
@@ -328,7 +328,7 @@ export default function Shop() {
               >
                 {filteredProducts?.map((p, index) => (
                   <motion.div
-                    key={p._id}
+                    key={p.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}

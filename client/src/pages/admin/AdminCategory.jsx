@@ -90,7 +90,7 @@ export default function AdminCategory() {
     if (!updatingName.trim()) return;
 
     try {
-      const { data } = await axios.put(`/category/${selected._id}`, { 
+      const { data } = await axios.put(`/category/${selected.id}`, { 
         name: updatingName.trim() 
       });
 
@@ -112,7 +112,7 @@ export default function AdminCategory() {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.delete(`/category/${selected._id}`);
+      const { data } = await axios.delete(`/category/${selected.id}`);
 
       if (data?.error) {
         toast.error(data.error);
@@ -245,7 +245,7 @@ export default function AdminCategory() {
                     <AnimatePresence>
                       {filteredCategories.map((category, index) => (
                         <motion.div
-                          key={category._id}
+                          key={category.id}
                           initial={{ opacity: 0, scale: 0.9 }}
                           animate={{ opacity: 1, scale: 1 }}
                           exit={{ opacity: 0, scale: 0.9 }}

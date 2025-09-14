@@ -119,7 +119,7 @@ export default function Search() {
         >
           {results.map((product, index) => (
             <motion.div
-              key={product._id}
+              key={product.id}
               variants={itemVariants}
               custom={index}
             >
