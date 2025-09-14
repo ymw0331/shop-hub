@@ -105,7 +105,7 @@ export class CategoryService {
             slug
         });
 
-        this.logger.info('Category updated successfully', { categoryId, name: updated.name, slug: updated.slug });
+        this.logger.info('Category updated successfully', { categoryId, name: updated?.name, slug: updated?.slug });
         timer();
         this.logger.methodExit('updateCategory', { categoryId });
 

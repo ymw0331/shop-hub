@@ -163,3 +163,34 @@ export const allOrders = async (req: Request, res: Response): Promise<void> => {
         logger.methodExit('allOrders', { success: false, error: error.message });
     }
 };
+
+// Route protection endpoints for frontend route guards
+export const authCheck = async (req: Request, res: Response): Promise<void> => {
+    logger.methodEntry('authCheck', { userId: (req as any).user?.id });
+
+    try {
+        // If we reach here, the user passed requireSignin middleware
+        logger.debug('Auth check passed', { userId: (req as any).user?.id });
+        res.json({ ok: true });
+        logger.methodExit('authCheck', { success: true });
+    } catch (error: any) {
+        logger.error('Auth check failed', error, { userId: (req as any).user?.id });
+        res.status(500).json({ ok: false, error: "Auth check failed" });
+        logger.methodExit('authCheck', { success: false, error: error.message });
+    }
+};
+
+export const adminCheck = async (req: Request, res: Response): Promise<void> => {
+    logger.methodEntry('adminCheck', { userId: (req as any).user?.id });
+
+    try {
+        // If we reach here, the user passed requireSignin + isAdmin middleware
+        logger.debug('Admin check passed', { userId: (req as any).user?.id });
+        res.json({ ok: true });
+        logger.methodExit('adminCheck', { success: true });
+    } catch (error: any) {
+        logger.error('Admin check failed', error, { userId: (req as any).user?.id });
+        res.status(500).json({ ok: false, error: "Admin check failed" });
+        logger.methodExit('adminCheck', { success: false, error: error.message });
+    }
+};

@@ -227,18 +227,33 @@ export const filteredProducts = async (req: Request, res: Response): Promise<voi
     const timer = logger.startTimer('Filter Products');
 
     try {
-        const { category, priceMin, priceMax, keyword } = req.body;
+        const { checked, radio, keyword } = req.body;
         const page = parseInt(req.body.page) || 1;
         const limit = parseInt(req.body.limit) || 10;
 
-        logger.debug('Filtering products', { category, priceMin, priceMax, keyword, page, limit });
+        // Map frontend format to service format
+        const filters: any = {};
+
+        // Handle category filters (checked is array of category IDs)
+        if (checked && checked.length > 0) {
+            filters.categories = checked;
+        }
+
+        // Handle price filters (radio is [min, max] array)
+        if (radio && radio.length === 2) {
+            filters.priceMin = radio[0];
+            filters.priceMax = radio[1];
+        }
+
+        // Handle keyword search
+        if (keyword) {
+            filters.keyword = keyword;
+        }
+
+        logger.debug('Filtering products', { filters, page, limit });
 
         // Controller Responsibility: Delegate to service
-        const result = await productService.searchProducts(
-            { category, priceMin, priceMax, keyword },
-            page,
-            limit
-        );
+        const result = await productService.searchProducts(filters, page, limit);
 
         logger.info('Products filtered', {
             count: result.products.length,

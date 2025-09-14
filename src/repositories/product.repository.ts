@@ -21,6 +21,18 @@ export class ProductRepository extends BaseRepository<Product> {
         });
     }
 
+    async findByCategories(categoryIds: string[]): Promise<Product[]> {
+        if (categoryIds.length === 0) {
+            return [];
+        }
+
+        return this.repository
+            .createQueryBuilder("product")
+            .leftJoinAndSelect("product.category", "category")
+            .where("product.categoryId IN (:...categoryIds)", { categoryIds })
+            .getMany();
+    }
+
     // Industry Standard: Search with ILIKE for case-insensitive search
     async searchByName(searchTerm: string): Promise<Product[]> {
         return this.repository

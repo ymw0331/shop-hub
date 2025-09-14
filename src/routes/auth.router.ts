@@ -1,6 +1,6 @@
 // src/routes/auth.routes.ts
 import { Router } from "express";
-import { register, login, secret, updateProfile, getOrders, allOrders } from "../controllers/auth.controller.js";
+import { register, login, secret, updateProfile, getOrders, allOrders, authCheck, adminCheck } from "../controllers/auth.controller.js";
 import { requireSignin, isAuth, isAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
@@ -16,5 +16,9 @@ router.put("/profile/:userId", requireSignin, isAuth, updateProfile);
 // Order routes
 router.get("/orders/:userId", requireSignin, isAuth, getOrders);
 router.get("/admin/orders", requireSignin, isAdmin, allOrders);
+
+// Route protection endpoints for frontend route guards
+router.get("/auth-check", requireSignin, authCheck);
+router.get("/admin-check", requireSignin, isAdmin, adminCheck);
 
 export default router;

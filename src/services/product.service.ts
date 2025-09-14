@@ -24,7 +24,8 @@ const gateway = new braintree.BraintreeGateway({
 });
 
 export interface ProductFilters {
-    category?: string;
+    categories?: string[];  // Now supports multiple categories
+    category?: string;      // Keep for backward compatibility
     priceMin?: number;
     priceMax?: number;
     keyword?: string;
@@ -255,7 +256,11 @@ export class ProductService {
 
         if (filters.keyword) {
             products = await this.productRepository.searchByName(filters.keyword);
+        } else if (filters.categories && filters.categories.length > 0) {
+            // Handle multiple categories
+            products = await this.productRepository.findByCategories(filters.categories);
         } else if (filters.category) {
+            // Backward compatibility for single category
             products = await this.productRepository.findByCategory(filters.category);
         } else {
             const result = await this.productRepository.findWithPagination(page, limit);
