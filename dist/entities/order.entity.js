@@ -43,7 +43,7 @@ __decorate([
     __metadata("design:type", User)
 ], Order.prototype, "buyer", void 0);
 __decorate([
-    Column({ name: "buyer_id" }),
+    Column({ name: "buyer_id", type: "uuid" }),
     __metadata("design:type", String)
 ], Order.prototype, "buyerId", void 0);
 __decorate([

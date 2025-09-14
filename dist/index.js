@@ -3,8 +3,11 @@ import express from "express";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
-import { AppDataSource } from "./database/data-source";
+import { AppDataSource } from "./database/data-source.js";
 import path from "path";
+import authRoutes from "./routes/auth.router.js";
+import categoryRoutes from "./routes/category.router.js";
+import productRoutes from "./routes/product.router.js";
 dotenv.config();
 const app = express();
 // Industry Standard: Async database initialization
@@ -28,10 +31,10 @@ async function startServer() {
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
-// TODO: Routes will be TypeScript imports later
-// app.use('/api', authRoutes);
-// app.use('/api', categoryRoutes);  
-// app.use('/api', productRoutes);
+// Register API routes
+app.use('/api', authRoutes);
+app.use('/api', categoryRoutes);
+app.use('/api', productRoutes);
 // Serve uploaded photos statically
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 startServer();

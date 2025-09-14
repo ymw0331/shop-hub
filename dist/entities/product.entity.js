@@ -62,7 +62,7 @@ __decorate([
     __metadata("design:type", Category)
 ], Product.prototype, "category", void 0);
 __decorate([
-    Column({ name: "category_id" }),
+    Column({ name: "category_id", type: "uuid" }),
     __metadata("design:type", String)
 ], Product.prototype, "categoryId", void 0);
 __decorate([
