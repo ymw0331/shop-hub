@@ -1,7 +1,7 @@
 // src/repositories/CategoryRepository.ts
 import { FindOptionsWhere } from "typeorm";
-import { BaseRepository } from "./BaseRepository.js";
-import { Category } from "../entities/Category.js";
+import { BaseRepository } from "./base.repository.js";
+import { Category } from "../entities/category.entity.js";
 import { ICategory } from "../types/index.js";
 
 export class CategoryRepository extends BaseRepository<Category> {

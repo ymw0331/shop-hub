@@ -1,7 +1,7 @@
 // src/repositories/UserRepository.ts
 import { FindOptionsWhere } from "typeorm";
-import { BaseRepository } from "./BaseRepository.js";
-import { User } from "../entities/User.js";
+import { BaseRepository } from "./base.repository.js";
+import { User } from "../entities/user.entity.js";
 import { IUser } from "../types/index.js";
 
 export class UserRepository extends BaseRepository<User> {

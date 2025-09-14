@@ -11,8 +11,8 @@ import {
     Index
 } from "typeorm";
 import { IProduct } from "../types/index.js";
-import { Category } from "./Category.js";
-import { Order } from "./Order.js";
+import { Category } from "./category.entity.js";
+import { Order } from "./order.entity.js";
 
 @Entity("products")
 @Index(["name"]) // For search performance

@@ -2,7 +2,7 @@
 // src/middlewares/auth.middleware.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { UserRepository } from "../repositories/UserRepository.js";
+import { UserRepository } from "../repositories/user.repository.js";
 
 const userRepository = new UserRepository();
 

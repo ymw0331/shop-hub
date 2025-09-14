@@ -1,7 +1,7 @@
 // src/repositories/ProductRepository.ts
 import { FindOptionsWhere, Between, Like } from "typeorm";
-import { BaseRepository } from "./BaseRepository.js";
-import { Product } from "../entities/Product.js";
+import { BaseRepository } from "./base.repository.js";
+import { Product } from "../entities/product.entity.js";
 import { IProduct } from "../types/index.js";
 
 export class ProductRepository extends BaseRepository<Product> {

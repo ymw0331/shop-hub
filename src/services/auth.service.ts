@@ -1,7 +1,7 @@
 // src/services/AuthService.ts
-import { UserRepository } from "../repositories/UserRepository.js";
-import { OrderRepository } from "../repositories/OrderRepository.js";
-import { hashPassword, comparePassword } from "../helpers/auth.js";
+import { UserRepository } from "../repositories/user.repository.js";
+import { OrderRepository } from "../repositories/order.repository.js";
+import { hashPassword, comparePassword } from "../helpers/auth.helper.js";
 import {
     validateRegistrationData,
     validateLoginData,

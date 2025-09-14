@@ -12,8 +12,8 @@ import {
     Index
 } from "typeorm";
 import { IOrder, OrderStatus } from "../types/index.js";
-import { User } from "./User.js";
-import { Product } from "./Product.js";
+import { User } from "./user.entity.js";
+import { Product } from "./product.entity.js";
 
 @Entity("orders")
 @Index(["buyerId"]) // For querying user orders

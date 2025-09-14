@@ -1,6 +1,6 @@
 // src/services/CategoryService.ts
-import { CategoryRepository } from "../repositories/CategoryRepository.js";
-import { ProductRepository } from "../repositories/ProductRepository.js";
+import { CategoryRepository } from "../repositories/category.repository.js";
+import { ProductRepository } from "../repositories/product.repository.js";
 import { CreateCategoryDto } from "../types/index.js";
 import slugify from "slugify";
 

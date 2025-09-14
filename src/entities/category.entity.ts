@@ -7,7 +7,7 @@ import {
     Index
 } from "typeorm";
 import { ICategory } from "../types/index.js";
-import { Product } from "./Product.js";
+import { Product } from "./product.entity.js";
 
 @Entity("categories")
 @Index(["name"], { unique: true })

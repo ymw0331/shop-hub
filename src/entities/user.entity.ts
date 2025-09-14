@@ -10,7 +10,7 @@ import {
     Index
 } from "typeorm";
 import { IUser } from "../types/index.js";
-import { Order } from "./Order.js";
+import { Order } from "./order.entity.js";
 
 @Entity("users") // Table name
 @Index(["email"], { unique: true }) // Database index for performance
