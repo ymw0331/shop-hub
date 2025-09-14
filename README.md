@@ -36,7 +36,7 @@ A production-ready e-commerce marketplace platform built with modern technologie
 - 💳 Secure checkout with Braintree payment integration
 - 👤 User registration and authentication
 - 📱 Fully responsive design with dark mode support
-- 📧 Email notifications for order updates
+- 📧 Email notifications (SendGrid ready, configuration required)
 - 📋 Order history and tracking
 
 ### Admin Features
@@ -45,13 +45,13 @@ A production-ready e-commerce marketplace platform built with modern technologie
 - 📦 Product management with image upload
 - 📋 Order management with status updates
 - 👥 User management and role assignment
-- 📈 Sales analytics and reporting
+- 📈 Order management and basic analytics
 
 ### Technical Features
-- 🔐 JWT-based authentication with refresh tokens
+- 🔐 JWT-based authentication
 - 🛡️ Role-based access control (User/Admin)
 - 📸 Image upload and optimization
-- 🔄 Real-time inventory tracking
+- 🔄 Inventory management with stock tracking
 - 📱 Mobile-first responsive design
 - 🌙 Dark mode support
 - ⚡ Optimized database queries with indexes
@@ -138,7 +138,6 @@ npm run build
 5. Seed the database with sample data:
 ```bash
 npm run db:seed
-npm run db:images
 ```
 
 ### Running the Application
@@ -223,9 +222,6 @@ npm run db:clear
 # Seed with fresh data
 npm run db:seed
 
-# Generate product images
-npm run db:images
-
 # Run TypeORM migrations
 npm run typeorm migration:run
 ```
@@ -284,7 +280,3 @@ This project is licensed under the ISC License.
 Wayne Yong - [GitHub](https://github.com/ymw0331)
 
 Project Link: [https://github.com/ymw0331/shophub](https://github.com/ymw0331/shophub)
-
----
-
-**Note**: ShopHub has been significantly enhanced from its original form with modern architecture, PostgreSQL database, TypeScript implementation, and production-ready features suitable for portfolio demonstration.
