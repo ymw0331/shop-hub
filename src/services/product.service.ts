@@ -203,6 +203,15 @@ export class ProductService {
         return product;
     }
 
+    // Business Logic: Get Product by ID
+    async getProductById(id: string): Promise<any> {
+        const product = await this.productRepository.findById(id);
+        if (!product) {
+            throw new Error("Product not found");
+        }
+        return product;
+    }
+
     // Business Logic: Search Products with Filters
     async searchProducts(
         filters: ProductFilters,

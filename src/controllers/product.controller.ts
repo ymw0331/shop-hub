@@ -80,10 +80,10 @@ export const photo = async (req: Request, res: Response): Promise<void> => {
     try {
         const { productId } = req.params;
 
-        // Controller Responsibility: Delegate to service
-        const product = await productService.getProductBySlug(productId);
+        // Controller Responsibility: Delegate to service (use ID instead of slug)
+        const product = await productService.getProductById(productId);
 
-        if (product.photoPath) {
+        if (product && product.photoPath) {
             // Controller Responsibility: Serve static file
             res.sendFile(product.photoPath, { root: process.cwd() });
         } else {
