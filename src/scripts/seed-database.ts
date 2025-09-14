@@ -5,7 +5,8 @@ import { Logger } from "../utils/logger.js";
 import { User } from "../entities/user.entity.js";
 import { Category } from "../entities/category.entity.js";
 import { Product } from "../entities/product.entity.js";
-import { Order, OrderStatus } from "../entities/order.entity.js";
+import { Order } from "../entities/order.entity.js";
+import { OrderStatus } from "../types/index.js";
 import bcrypt from "bcrypt";
 import slugify from "slugify";
 
@@ -370,10 +371,10 @@ async function seedDatabase() {
 
             const order = orderRepository.create({
                 products: orderProducts,
-                payment_id: `PAY_${Date.now()}_${i}`,
+                payment: { transaction_id: `PAY_${Date.now()}_${i}` },
                 buyer: user,
                 buyerId: user.id,
-                status: OrderStatus.NOT_PROCESSED // Fixed enum usage
+                status: OrderStatus.NOT_PROCESSED
             });
 
             await orderRepository.save(order);
