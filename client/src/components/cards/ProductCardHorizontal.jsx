@@ -20,7 +20,7 @@ export default function ProductCardHorizontal ( { p, remove = true } )
       <div className='flex'>
         <div className='w-1/3 md:w-1/4'>
           <img
-            src={ `${ process.env.REACT_APP_API }/product/photo/${ p.id }` }
+            src={ p.photoPath ? `${ process.env.REACT_APP_API }${ p.photoPath }` : '/placeholder.png' }
             alt={ p.name }
             className='w-full h-36 object-cover'
           />

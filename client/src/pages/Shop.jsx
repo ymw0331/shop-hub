@@ -99,7 +99,7 @@ export default function Shop() {
         checked,
         radio
       });
-      setFilteredProducts(data);
+      setFilteredProducts(data.products || []);
     } catch (error) {
       console.error(error);
     }

@@ -74,11 +74,11 @@ export default function UserOrders() {
     >
       <div className="flex-shrink-0">
         <img
-          src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
+          src={product.photoPath ? `${process.env.REACT_APP_API}${product.photoPath}` : '/placeholder.png'}
           alt={product.name}
           className="w-16 h-16 object-cover rounded-lg shadow-md"
           onError={(e) => {
-            e.target.src = '/placeholder-product.png';
+            e.target.src = '/placeholder.png';
           }}
         />
       </div>

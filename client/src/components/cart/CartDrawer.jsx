@@ -150,7 +150,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                         className="flex gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
                       >
                         <img
-                          src={`${process.env.REACT_APP_API}/product/photo/${item.id}`}
+                          src={item.photoPath ? `${process.env.REACT_APP_API}${item.photoPath}` : '/placeholder.png'}
                           alt={item.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />

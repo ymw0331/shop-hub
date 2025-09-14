@@ -194,13 +194,13 @@ export default function AdminProductUpdate ()
                         className="flex justify-center mb-4"
                       >
                         <div className="relative rounded-xl overflow-hidden shadow-lg">
-                          <img 
+                          <img
                             src={
-                              photo 
+                              photo
                                 ? URL.createObjectURL(photo)
-                                : `${process.env.REACT_APP_API}/product/photo/${id}?${new Date().getTime()}`
+                                : '/placeholder.png'
                             }
-                            alt="Product" 
+                            alt="Product"
                             className="w-48 h-48 object-cover"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

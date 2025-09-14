@@ -166,7 +166,7 @@ export default function Cart() {
                       <Link to={`/product/${item.slug}`}>
                         <div className="w-24 h-24 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0">
                           <img
-                            src={`${process.env.REACT_APP_API}/product/photo/${item.id}`}
+                            src={item.photoPath ? `${process.env.REACT_APP_API}${item.photoPath}` : '/placeholder.png'}
                             alt={item.name}
                             className="w-full h-full object-cover hover:scale-105 transition-transform"
                           />

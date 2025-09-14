@@ -149,7 +149,7 @@ export default function AdminProducts ()
                               <div className="md:col-span-1">
                                 <div className="relative h-48 md:h-full overflow-hidden rounded-l-lg">
                                   <img
-                                    src={`${process.env.REACT_APP_API}/product/photo/${product?.id}`}
+                                    src={product?.photoPath ? `${process.env.REACT_APP_API}${product.photoPath}` : '/placeholder.png'}
                                     alt={product.name}
                                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                   />

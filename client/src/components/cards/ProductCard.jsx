@@ -71,9 +71,9 @@ export default function ProductCard({ p: product, viewMode }) {
           <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse" />
         )}
         
-        {!imageError ? (
+        {!imageError && product.photoPath ? (
           <img
-            src={`${process.env.REACT_APP_API}/product/photo/${product.id}`}
+            src={`${process.env.REACT_APP_API}${product.photoPath}`}
             alt={product.name}
             onLoad={() => setImageLoading(false)}
             onError={() => {
