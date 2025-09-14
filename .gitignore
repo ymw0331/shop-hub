@@ -6,3 +6,10 @@ node_modules
 
 # Application logs
 logs/
+
+# Compiled TypeScript
+dist/
+
+# Testing and docs
+FINAL_TESTING_SUMMARY.md
+docs/
