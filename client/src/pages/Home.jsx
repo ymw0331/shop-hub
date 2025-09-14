@@ -30,7 +30,7 @@ export default function Home() {
 
   const getTotal = async () => {
     try {
-      const { data } = await axios.get("/products-count");
+      const { data } = await axios.get("/products/count");
       setTotal(data);
     } catch (error) {
       console.log(error);
@@ -40,7 +40,7 @@ export default function Home() {
   const loadProducts = async () => {
     try {
       setInitialLoading(true);
-      const { data } = await axios.get(`/list-products/${page}`);
+      const { data } = await axios.get(`/products/${page}`);
       setProducts(data);
       setInitialLoading(false);
     } catch (error) {
@@ -52,7 +52,7 @@ export default function Home() {
   const loadMore = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`/list-products/${page}`);
+      const { data } = await axios.get(`/products/${page}`);
       setProducts([...products, ...data]);
       setLoading(false);
     } catch (error) {

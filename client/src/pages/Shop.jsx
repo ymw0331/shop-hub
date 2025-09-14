@@ -95,7 +95,7 @@ export default function Shop() {
 
   const loadFilteredProducts = async () => {
     try {
-      const { data } = await axios.post("/filtered-products", {
+      const { data } = await axios.post("/products/search", {
         checked,
         radio
       });

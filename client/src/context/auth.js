@@ -16,7 +16,7 @@ const AuthProvider = ( { children } ) =>
   // Update axios headers when auth changes
   useEffect( () =>
   {
-    axios.defaults.headers.common[ 'Authorization' ] = auth?.token;
+    axios.defaults.headers.common[ 'Authorization' ] = auth?.token ? `Bearer ${auth.token}` : '';
   }, [ auth?.token ] );
 
   useEffect( () =>
@@ -27,6 +27,8 @@ const AuthProvider = ( { children } ) =>
       //grab data and put into state
       const parsed = JSON.parse( data );
       setAuth( { user: parsed.user, token: parsed.token } );
+      // Immediately set the Bearer header for existing tokens
+      axios.defaults.headers.common[ 'Authorization' ] = parsed.token ? `Bearer ${parsed.token}` : '';
     }
   }, [] );
 
