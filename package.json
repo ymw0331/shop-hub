@@ -28,20 +28,21 @@
     "express-formidable": "^1.2.0",
     "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
-    "slugify": "^1.6.5",
-    "typeorm": "^0.3.0",
     "pg": "^8.11.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "slugify": "^1.6.5",
+    "typeorm": "^0.3.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0",
-    "@types/express": "^4.17.0",
     "@types/bcrypt": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.0",
+    "@types/braintree": "^3.4.0",
     "@types/cors": "^2.8.0",
+    "@types/express": "^4.17.0",
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/morgan": "^1.9.0",
+    "@types/node": "^20.0.0",
+    "nodemon": "^2.0.20",
     "ts-node": "^10.9.0",
-    "nodemon": "^2.0.20"
+    "typescript": "^5.0.0"
   }
 }
