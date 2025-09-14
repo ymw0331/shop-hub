@@ -22,6 +22,7 @@ router.get("/product/photo/:productId", photo);
 
 // Search and filtering
 router.post("/products/search", filteredProducts);
+router.post("/filtered-products", filteredProducts); // Backward compatibility alias
 router.get("/products/count", productsCount);
 router.get("/products/:page", listProducts);
 router.get("/products/search/:keyword", productSearch);

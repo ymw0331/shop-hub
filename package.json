@@ -31,7 +31,9 @@
     "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
     "slugify": "^1.6.5",
-    "typeorm": "^0.3.0"
+    "typeorm": "^0.3.0",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -42,6 +44,7 @@
     "@types/jsonwebtoken": "^9.0.0",
     "@types/morgan": "^1.9.0",
     "@types/node": "^20.19.14",
+    "@types/winston": "^2.4.4",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.0",
     "tsx": "^4.20.5",

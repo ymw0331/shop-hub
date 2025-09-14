@@ -2,8 +2,11 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import { Logger } from "../utils/logger.js";
 
 dotenv.config();
+
+const logger = new Logger('DataSource');
 
 // Industry standard: Environment validation
 const requiredEnvVars = [
@@ -16,9 +19,17 @@ const requiredEnvVars = [
 
 requiredEnvVars.forEach(envVar => {
     if (!process.env[envVar]) {
+        logger.error(`Missing required environment variable: ${envVar}`, new Error('Environment variable missing'));
         throw new Error(`Missing required environment variable: ${envVar}`)
     }
 })
+
+logger.info('Initializing PostgreSQL data source', {
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT,
+    database: process.env.POSTGRES_DB,
+    environment: process.env.NODE_ENV
+});
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -53,4 +64,4 @@ export const AppDataSource = new DataSource({
 
     // SSL for production
     ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
-})
+});

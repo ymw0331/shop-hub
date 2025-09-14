@@ -10,6 +10,7 @@ import path from "path";
 import braintree from "braintree";
 import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
+import { Logger } from "../utils/logger.js";
 
 dotenv.config();
 sgMail.setApiKey(process.env.SENDGRID_KEY!);
@@ -40,11 +41,13 @@ export class ProductService {
     private productRepository: ProductRepository;
     private categoryRepository: CategoryRepository;
     private orderRepository: OrderRepository;
+    private logger: Logger;
 
     constructor() {
         this.productRepository = new ProductRepository();
         this.categoryRepository = new CategoryRepository();
         this.orderRepository = new OrderRepository();
+        this.logger = new Logger('ProductService');
     }
 
     // Business Logic: Create Product with Photo Upload
@@ -52,46 +55,60 @@ export class ProductService {
         productData: CreateProductDto & { [key: string]: any },
         photo?: ProductPhoto
     ): Promise<any> {
+        this.logger.methodEntry('createProduct', { name: productData.name, hasPhoto: !!photo });
+        const timer = this.logger.startTimer('Create Product');
+
         const { name, description, price, category, quantity, shipping } = productData;
 
         // Business Logic: Validate product data
+        this.logger.debug('Validating product data', { name });
         const validationError = this.validateProductData(productData);
         if (validationError) {
+            this.logger.warn('Product validation failed', { name, error: validationError });
             throw new Error(validationError);
         }
 
         // Business Logic: Validate category exists
+        this.logger.debug('Validating category', { categoryId: category });
         const categoryExists = await this.categoryRepository.findById(category);
         if (!categoryExists) {
+            this.logger.error('Category not found', new Error('Category not found'), { categoryId: category });
             throw new Error("Category not found");
         }
 
         // Business Logic: Generate unique slug
         const baseSlug = slugify(name, { lower: true });
         const slug = await this.generateUniqueSlug(baseSlug);
+        this.logger.debug('Generated unique slug', { name, slug });
 
         // Business Logic: Handle photo upload
         let photoPath: string | undefined;
         let photoContentType: string | undefined;
 
         if (photo) {
+            this.logger.debug('Processing photo upload', { size: photo.size, type: photo.type });
             const photoValidation = this.validatePhoto(photo);
             if (photoValidation) {
+                this.logger.warn('Photo validation failed', { error: photoValidation });
                 throw new Error(photoValidation);
             }
-            
+
             const photoResult = await this.saveProductPhoto(photo, slug);
             photoPath = photoResult.path;
             photoContentType = photo.type;
+            this.logger.debug('Photo saved successfully', { path: photoPath });
         }
 
         // Business Logic: Get category for relation
+        this.logger.debug('Fetching category entity', { categoryId: productData.categoryId });
         const categoryEntity = await this.categoryRepository.findById(productData.categoryId);
         if (!categoryEntity) {
+            this.logger.error('Category entity not found', new Error('Category not found'), { categoryId: productData.categoryId });
             throw new Error("Category not found");
         }
 
         // Business Logic: Create product
+        this.logger.debug('Creating product in database', { name, slug, price, quantity });
         const product = await this.productRepository.createProduct({
             name: name.trim(),
             slug,
@@ -106,6 +123,10 @@ export class ProductService {
             photoContentType,
         });
 
+        this.logger.info('Product created successfully', { productId: product.id, name: product.name, slug: product.slug });
+        timer();
+        this.logger.methodExit('createProduct', { productId: product.id });
+
         return product;
     }
 
@@ -115,16 +136,23 @@ export class ProductService {
         productData: Partial<CreateProductDto & { [key: string]: any }>,
         photo?: ProductPhoto
     ): Promise<any> {
+        this.logger.methodEntry('updateProduct', { productId, hasPhoto: !!photo, fields: Object.keys(productData) });
+        const timer = this.logger.startTimer('Update Product');
+
         // Business Logic: Check if product exists
+        this.logger.debug('Checking if product exists', { productId });
         const existingProduct = await this.productRepository.findById(productId);
         if (!existingProduct) {
+            this.logger.error('Product not found for update', new Error('Product not found'), { productId });
             throw new Error("Product not found");
         }
 
         // Business Logic: Validate updated data
         if (Object.keys(productData).length > 0) {
+            this.logger.debug('Validating update data', { productId, fields: Object.keys(productData) });
             const validationError = this.validateProductData(productData, false);
             if (validationError) {
+                this.logger.warn('Update validation failed', { productId, error: validationError });
                 throw new Error(validationError);
             }
         }
@@ -132,8 +160,10 @@ export class ProductService {
         // Business Logic: Handle slug regeneration if name changed
         let slug = existingProduct.slug;
         if (productData.name && productData.name !== existingProduct.name) {
+            this.logger.debug('Regenerating slug for name change', { oldName: existingProduct.name, newName: productData.name });
             const baseSlug = slugify(productData.name, { lower: true });
             slug = await this.generateUniqueSlug(baseSlug, productId);
+            this.logger.debug('New slug generated', { productId, slug });
         }
 
         // Business Logic: Handle photo update
@@ -141,13 +171,16 @@ export class ProductService {
         let photoContentType = existingProduct.photoContentType;
 
         if (photo) {
+            this.logger.debug('Processing photo update', { productId, size: photo.size, type: photo.type });
             const photoValidation = this.validatePhoto(photo);
             if (photoValidation) {
+                this.logger.warn('Photo validation failed during update', { productId, error: photoValidation });
                 throw new Error(photoValidation);
             }
 
             // Remove old photo
             if (existingProduct.photoPath) {
+                this.logger.debug('Removing old photo', { productId, oldPath: existingProduct.photoPath });
                 await this.removeProductPhoto(existingProduct.photoPath);
             }
 
