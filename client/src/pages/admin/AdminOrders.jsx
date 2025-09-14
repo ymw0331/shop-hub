@@ -53,7 +53,7 @@ export default function AdminOrders ()
     try
     {
       setLoading( true );
-      const { data } = await axios.get( "/all-orders" );
+      const { data } = await axios.get( "/admin/orders" );
       setOrders( data );
     } catch ( err )
     {
@@ -69,7 +69,7 @@ export default function AdminOrders ()
     setChangedStatus( value );
     try
     {
-      const { data } = await axios.put( `/order-status/${ orderId }`, {
+      const { data } = await axios.put( `/order/status/${ orderId }/${auth.user.id}`, {
         status: value,
       } );
       getOrders();

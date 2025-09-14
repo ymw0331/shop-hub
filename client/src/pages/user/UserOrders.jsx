@@ -26,7 +26,7 @@ export default function UserOrders() {
   const getOrders = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get("/orders");
+      const { data } = await axios.get(`/orders/${auth.user.id}`);
       setOrders(data || []);
     } catch (err) {
       console.log(err);

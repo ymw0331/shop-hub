@@ -62,9 +62,9 @@ export default function AdminDashboard() {
       
       // Fetch all data in parallel
       const [ordersRes, productsRes, productsCountRes] = await Promise.all([
-        axios.get('/all-orders'),
+        axios.get('/admin/orders'),
         axios.get('/products'),
-        axios.get('/products-count')
+        axios.get('/products/count')
       ]);
 
       const orders = ordersRes.data || [];

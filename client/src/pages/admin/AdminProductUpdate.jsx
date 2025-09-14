@@ -97,7 +97,7 @@ export default function AdminProductUpdate ()
       productData.append( 'shipping', shipping );
       productData.append( 'quantity', quantity );
 
-      const { data } = await axios.put( `/product/${ id }`, productData );
+      const { data } = await axios.put( `/product/${ id }/${auth.user.id}`, productData );
       if ( data?.error )
       {
         toast.error( data.error );
@@ -122,7 +122,7 @@ export default function AdminProductUpdate ()
     setLoading(true);
     try
     {
-      const { data } = await axios.delete( `/product/${ id }` );
+      const { data } = await axios.delete( `/product/${ id }/${auth.user.id}` );
       toast.success( `${ data.name } is deleted` );
       navigate( "/dashboard/admin/products" );
 

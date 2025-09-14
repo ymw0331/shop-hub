@@ -42,7 +42,7 @@ export default function UserProfile() {
 
     setLoading(true);
     try {
-      const { data } = await axios.put(`/profile`, {
+      const { data } = await axios.put(`/profile/${auth.user.id}`, {
         name,
         password,
         address,

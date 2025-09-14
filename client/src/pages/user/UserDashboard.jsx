@@ -29,7 +29,7 @@ export default function UserDashboard() {
 
   const fetchUserStats = async () => {
     try {
-      const { data } = await axios.get('/orders');
+      const { data } = await axios.get(`/orders/${auth.user.id}`);
       setStats({
         totalOrders: data?.length || 0,
         recentOrders: data?.slice(0, 3) || [],
