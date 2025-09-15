@@ -10,7 +10,8 @@
     "typeorm": "tsx ./node_modules/typeorm/cli.js -d src/database/data-source.ts",
     "migrate-data": "tsx scripts/migrate-data.ts",
     "db:clear": "tsx src/scripts/clear-database.ts",
-    "db:seed": "tsx src/scripts/seed-database.ts"
+    "db:seed": "tsx src/scripts/seed-database.ts",
+    "db:images": "tsx src/scripts/populate-product-images.ts"
   },
   "keywords": [
     "ecommerce",

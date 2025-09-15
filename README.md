@@ -138,6 +138,7 @@ npm run build
 5. Seed the database with sample data:
 ```bash
 npm run db:seed
+npm run db:images  # Populate product images
 ```
 
 ### Running the Application
@@ -221,6 +222,9 @@ npm run db:clear
 
 # Seed with fresh data
 npm run db:seed
+
+# Populate product images
+npm run db:images
 
 # Run TypeORM migrations
 npm run typeorm migration:run
