@@ -59,7 +59,7 @@ export class ProductService {
         this.logger.methodEntry('createProduct', { name: productData.name, hasPhoto: !!photo });
         const timer = this.logger.startTimer('Create Product');
 
-        const { name, description, price, category, quantity, shipping } = productData;
+        const { name, description, price, categoryId, quantity, shipping } = productData;
 
         // Business Logic: Validate product data
         this.logger.debug('Validating product data', { name });
@@ -70,10 +70,10 @@ export class ProductService {
         }
 
         // Business Logic: Validate category exists
-        this.logger.debug('Validating category', { categoryId: category });
-        const categoryExists = await this.categoryRepository.findById(category);
+        this.logger.debug('Validating category', { categoryId });
+        const categoryExists = await this.categoryRepository.findById(categoryId);
         if (!categoryExists) {
-            this.logger.error('Category not found', new Error('Category not found'), { categoryId: category });
+            this.logger.error('Category not found', new Error('Category not found'), { categoryId });
             throw new Error("Category not found");
         }
 
@@ -101,10 +101,10 @@ export class ProductService {
         }
 
         // Business Logic: Get category for relation
-        this.logger.debug('Fetching category entity', { categoryId: productData.categoryId });
-        const categoryEntity = await this.categoryRepository.findById(productData.categoryId);
+        this.logger.debug('Fetching category entity', { categoryId });
+        const categoryEntity = await this.categoryRepository.findById(categoryId);
         if (!categoryEntity) {
-            this.logger.error('Category entity not found', new Error('Category not found'), { categoryId: productData.categoryId });
+            this.logger.error('Category entity not found', new Error('Category not found'), { categoryId });
             throw new Error("Category not found");
         }
 
@@ -117,7 +117,7 @@ export class ProductService {
             price: typeof price === 'string' ? parseFloat(price) : price,
             quantity: typeof quantity === 'string' ? parseInt(quantity) : quantity,
             shipping: typeof shipping === 'string' ? shipping === "true" : Boolean(shipping),
-            categoryId: productData.categoryId,
+            categoryId: categoryId,
             category: categoryEntity,
             sold: 0, // Default value
             photoPath,
@@ -449,8 +449,8 @@ export class ProductService {
             }
         }
 
-        if (isCreate || data.category !== undefined) {
-            if (!data.category) {
+        if (isCreate || data.categoryId !== undefined) {
+            if (!data.categoryId) {
                 return "Category is required";
             }
         }
