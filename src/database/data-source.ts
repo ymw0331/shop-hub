@@ -40,7 +40,8 @@ export const AppDataSource = new DataSource({
     database: process.env.POSTGRES_DB,
 
     // SSL configuration for cloud providers (Neon, Supabase, etc.)
-    ssl: process.env.POSTGRES_SSL === 'true' ? {
+    // Neon requires SSL - always enable for cloud connections
+    ssl: process.env.POSTGRES_SSL === 'true' || process.env.POSTGRES_HOST?.includes('neon.tech') ? {
         rejectUnauthorized: false
     } : false,
 
@@ -65,8 +66,5 @@ export const AppDataSource = new DataSource({
         connectionLimit: 10,
         acquireTimeout: 60000,
         timeout: 60000,
-    },
-
-    // SSL for production
-    ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false } : false
+    }
 });
