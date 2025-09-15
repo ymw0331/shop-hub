@@ -39,6 +39,11 @@ export const AppDataSource = new DataSource({
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
 
+    // SSL configuration for cloud providers (Neon, Supabase, etc.)
+    ssl: process.env.POSTGRES_SSL === 'true' ? {
+        rejectUnauthorized: false
+    } : false,
+
     // Industry Standards:
     synchronize: process.env.NODE_ENV === "development", // Never use in production
     logging: process.env.NODE_ENV === "development",

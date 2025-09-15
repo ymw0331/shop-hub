@@ -10,6 +10,5 @@ logs/
 # Compiled TypeScript
 dist/
 
-# Testing and docs
+# Testing
 FINAL_TESTING_SUMMARY.md
-docs/
