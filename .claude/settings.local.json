@@ -10,7 +10,9 @@
       "Bash(git commit:*)",
       "Bash(python3:*)",
       "Bash(psql:*)",
-      "Bash(npm run dev:*)"
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:vercel.com)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []

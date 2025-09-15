@@ -50,6 +50,33 @@ async function startServer() {
     }
 }
 
+// Initialize database connection for Vercel
+let dbInitialized = false;
+async function ensureDbConnection() {
+    if (!dbInitialized) {
+        try {
+            await AppDataSource.initialize();
+            dbInitialized = true;
+            logger.info('✅ Database connected for Vercel');
+        } catch (error) {
+            logger.error('Database connection failed', error as Error);
+            throw error;
+        }
+    }
+}
+
+// Database middleware for Vercel
+if (process.env.VERCEL) {
+    app.use(async (req, res, next) => {
+        try {
+            await ensureDbConnection();
+            next();
+        } catch (error) {
+            res.status(500).json({ error: 'Database connection failed' });
+        }
+    });
+}
+
 // Middleware (same as before)
 // Configure CORS with specific options
 app.use(cors({
@@ -88,9 +115,14 @@ app.use('/api', productRoutes);
 app.use('/api/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
 logger.info('Static file serving configured', { path: '/api/uploads' });
 
-startServer();
+// For Vercel deployment, export the app without starting the server
+// Only start the server if not in Vercel environment
+if (!process.env.VERCEL) {
+    startServer();
+}
 
-
+// Export the app for Vercel
+export default app;
 
 // Optional: Graceful shutdown (production best practice)
 process.on('SIGTERM', async () => {
