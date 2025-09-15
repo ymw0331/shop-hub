@@ -36,62 +36,9 @@ const AppDataSource = new DataSource({
     ssl: process.env.POSTGRES_SSL === 'true' || process.env.POSTGRES_HOST?.includes('neon.tech') ? {
         rejectUnauthorized: false
     } : false,
+    entities: [],
     synchronize: false,
-    logging: false,
-    entities: [
-        // Define entities inline to avoid file path issues
-        {
-            name: "users",
-            columns: {
-                id: { type: "int", primary: true, generated: true },
-                name: { type: "varchar" },
-                email: { type: "varchar", unique: true },
-                password: { type: "varchar" },
-                address: { type: "varchar", nullable: true },
-                role: { type: "int", default: 0 },
-                created_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" },
-                updated_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" }
-            }
-        },
-        {
-            name: "categories",
-            columns: {
-                id: { type: "int", primary: true, generated: true },
-                name: { type: "varchar", unique: true },
-                slug: { type: "varchar", unique: true },
-                created_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" },
-                updated_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" }
-            }
-        },
-        {
-            name: "products",
-            columns: {
-                id: { type: "int", primary: true, generated: true },
-                name: { type: "varchar" },
-                slug: { type: "varchar", unique: true },
-                description: { type: "text" },
-                price: { type: "decimal", precision: 10, scale: 2 },
-                category_id: { type: "int" },
-                quantity: { type: "int", default: 0 },
-                photo: { type: "varchar", nullable: true },
-                shipping: { type: "boolean", default: false },
-                created_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" },
-                updated_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" }
-            }
-        },
-        {
-            name: "orders",
-            columns: {
-                id: { type: "int", primary: true, generated: true },
-                products: { type: "jsonb" },
-                payment: { type: "jsonb" },
-                buyer_id: { type: "int" },
-                status: { type: "varchar", default: "Not Process" },
-                created_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" },
-                updated_at: { type: "timestamp", default: () => "CURRENT_TIMESTAMP" }
-            }
-        }
-    ]
+    logging: false
 });
 
 // Initialize database connection
@@ -171,10 +118,12 @@ app.post("/api/register", async (req, res) => {
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create user
+        // Create user with UUID
+        const id = require('crypto').randomUUID();
         const result = await AppDataSource.query(
-            "INSERT INTO users (name, email, password, address) VALUES ($1, $2, $3, $4) RETURNING *",
-            [name, email, hashedPassword, address]
+            `INSERT INTO users (id, name, email, password, address, role, "createdAt", "updatedAt")
+             VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) RETURNING *`,
+            [id, name, email, hashedPassword, address, 0]
         );
 
         res.status(201).json({
@@ -251,10 +200,11 @@ app.post("/api/category", requireSignIn, isAdmin, async (req, res) => {
     try {
         const { name } = req.body;
         const slug = name.toLowerCase().replace(/ /g, "-");
+        const id = require('crypto').randomUUID();
 
         const result = await AppDataSource.query(
-            "INSERT INTO categories (name, slug) VALUES ($1, $2) RETURNING *",
-            [name, slug]
+            `INSERT INTO categories (id, name, slug) VALUES ($1, $2, $3) RETURNING *`,
+            [id, name, slug]
         );
 
         res.status(201).json(result[0]);
@@ -269,8 +219,8 @@ app.get("/api/products", async (req, res) => {
         const products = await AppDataSource.query(`
             SELECT p.*, c.name as category_name
             FROM products p
-            LEFT JOIN categories c ON p.category_id = c.id
-            ORDER BY p.created_at DESC
+            LEFT JOIN categories c ON p."categoryId" = c.id
+            ORDER BY p."createdAt" DESC
         `);
         res.json(products);
     } catch (error) {
@@ -284,7 +234,7 @@ app.get("/api/product/:slug", async (req, res) => {
         const products = await AppDataSource.query(
             `SELECT p.*, c.name as category_name
              FROM products p
-             LEFT JOIN categories c ON p.category_id = c.id
+             LEFT JOIN categories c ON p."categoryId" = c.id
              WHERE p.slug = $1`,
             [slug]
         );
@@ -303,11 +253,12 @@ app.post("/api/product", requireSignIn, isAdmin, async (req, res) => {
     try {
         const { name, description, price, category, quantity, shipping } = req.body;
         const slug = name.toLowerCase().replace(/ /g, "-");
+        const id = require('crypto').randomUUID();
 
         const result = await AppDataSource.query(
-            `INSERT INTO products (name, slug, description, price, category_id, quantity, shipping)
-             VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
-            [name, slug, description, price, category, quantity, shipping]
+            `INSERT INTO products (id, name, slug, description, price, "categoryId", quantity, shipping, "createdAt", "updatedAt")
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW()) RETURNING *`,
+            [id, name, slug, description, price, category, quantity, shipping]
         );
 
         res.status(201).json(result[0]);
@@ -320,7 +271,7 @@ app.post("/api/product", requireSignIn, isAdmin, async (req, res) => {
 app.get("/api/orders", requireSignIn, async (req, res) => {
     try {
         const orders = await AppDataSource.query(
-            "SELECT * FROM orders WHERE buyer_id = $1 ORDER BY created_at DESC",
+            `SELECT * FROM orders WHERE "buyerId" = $1 ORDER BY "createdAt" DESC`,
             [req.user.id]
         );
         res.json(orders);
