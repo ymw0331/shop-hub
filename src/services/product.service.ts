@@ -8,12 +8,10 @@ import slugify from "slugify";
 import fs from "fs";
 import path from "path";
 import braintree from "braintree";
-import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv";
 import { Logger } from "../utils/logger.js";
 
 dotenv.config();
-sgMail.setApiKey(process.env.SENDGRID_KEY!);
 
 // Braintree Gateway Configuration
 const gateway = new braintree.BraintreeGateway({

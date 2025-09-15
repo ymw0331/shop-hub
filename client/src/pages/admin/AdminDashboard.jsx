@@ -73,7 +73,9 @@ export default function AdminDashboard() {
 
       // Calculate total revenue from orders
       const totalRevenue = orders.reduce((sum, order) => {
-        return sum + (order.payment?.transaction?.amount || 0);
+        // Parse amount as float since Braintree returns it as a string
+        const amount = parseFloat(order.payment?.transaction?.amount) || 0;
+        return sum + amount;
       }, 0);
 
       // Get unique users from orders
@@ -100,7 +102,7 @@ export default function AdminDashboard() {
   const statsData = [
     {
       title: 'Total Revenue',
-      value: `$${stats.totalRevenue.toFixed(2)}`,
+      value: `$${(typeof stats.totalRevenue === 'number' ? stats.totalRevenue : 0).toFixed(2)}`,
       change: 'Live data',
       changeType: 'neutral',
       icon: DollarSign,
