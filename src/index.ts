@@ -82,7 +82,8 @@ if (process.env.VERCEL) {
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://shop-hub-pied-zeta.vercel.app',
+    'https://shop-hub-pied-zeta.vercel.app',  // Frontend on Vercel
+    'https://shop-hub-api-894x.onrender.com',  // Backend on Render
     process.env.CLIENT_URL
 ].filter(Boolean);
 
