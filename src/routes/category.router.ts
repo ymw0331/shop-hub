@@ -6,9 +6,9 @@ import { requireSignin, isAuth, isAdmin } from "../middlewares/auth.middleware.j
 const router = Router();
 
 // Category CRUD
-router.post("/category/create/:userId", requireSignin, isAuth, isAdmin, create);
-router.put("/category/:categoryId/:userId", requireSignin, isAuth, isAdmin, update);
-router.delete("/category/:categoryId/:userId", requireSignin, isAuth, isAdmin, remove);
+router.post("/category/create", requireSignin, isAdmin, create);
+router.put("/category/:categoryId", requireSignin, isAdmin, update);
+router.delete("/category/:categoryId", requireSignin, isAdmin, remove);
 
 // Public category routes
 router.get("/categories", list);

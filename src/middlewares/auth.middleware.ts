@@ -53,6 +53,12 @@ export const isAdmin = async (req: Request, res: Response, next: NextFunction) =
 
     try {
         const user = (req as any).user;
+
+        if (!user || !user.id) {
+            logger.warn('Admin check failed - no user in request', { url: req.url });
+            return res.status(401).json({ error: "Authentication required" });
+        }
+
         logger.debug('Checking admin privileges', { userId: user.id });
 
         const foundUser = await userRepository.findById(user.id);

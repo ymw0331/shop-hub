@@ -1,10 +1,13 @@
 // src/controllers/product.controller.ts
 import { Request, Response } from "express";
 import { ProductService, ProductPhoto } from "../services/product.service.js";
+import { OrderRepository } from "../repositories/order.repository.js";
+import { OrderStatus } from "../types/index.js";
 import { Logger } from "../utils/logger.js";
 
 // Dependency Injection: Single service instance
 const productService = new ProductService();
+const orderRepository = new OrderRepository();
 const logger = new Logger('ProductController');
 
 export const create = async (req: Request, res: Response): Promise<void> => {
@@ -448,24 +451,40 @@ export const orderStatus = async (req: Request, res: Response): Promise<void> =>
 
         logger.debug('Updating order status', { orderId, status });
 
-        // This would typically be in an OrderService, but keeping it simple
         // Controller Responsibility: Basic validation
         if (!status) {
             logger.warn('Order status update failed - status required', { orderId });
-            res.json({ error: "Status is required" });
+            res.status(400).json({ error: "Status is required" });
             return;
         }
 
-        // For now, we'll add this to ProductService or create OrderService later
-        // This is a simplified implementation
-        logger.info('Order status updated', { orderId, status });
+        // Validate status is a valid OrderStatus enum value
+        if (!Object.values(OrderStatus).includes(status)) {
+            logger.warn('Order status update failed - invalid status', { orderId, status });
+            res.status(400).json({ error: "Invalid status value" });
+            return;
+        }
+
+        // Actually update the order status in the database
+        const updatedOrder = await orderRepository.updateStatus(orderId, status);
+
+        if (!updatedOrder) {
+            logger.warn('Order not found', { orderId });
+            res.status(404).json({ error: "Order not found" });
+            return;
+        }
+
+        logger.info('Order status updated successfully', { orderId, status });
         timer();
 
-        res.json({ message: "Order status updated", orderId, status });
+        res.json({
+            message: "Order status updated successfully",
+            order: updatedOrder
+        });
         logger.methodExit('orderStatus', { success: true, orderId, status });
     } catch (error: any) {
         logger.error('Failed to update order status', error, { orderId });
-        res.status(400).json({ error: error.message });
+        res.status(500).json({ error: "Failed to update order status" });
         logger.methodExit('orderStatus', { success: false, error: error.message });
     }
 };
