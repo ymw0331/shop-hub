@@ -15,6 +15,16 @@ dotenv.config();
 // Create Express app
 const app = express();
 
+// CRITICAL: Handle OPTIONS requests FIRST before anything else
+app.options('*', (req, res) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Max-Age', '86400');
+    res.sendStatus(200);
+});
+
 // Configure CORS properly
 const allowedOrigins = [
     'http://localhost:3000',
@@ -23,26 +33,34 @@ const allowedOrigins = [
     process.env.CLIENT_URL
 ].filter(Boolean);
 
-app.use(cors({
-    origin: function(origin, callback) {
-        // Allow requests with no origin (like mobile apps or Postman)
-        if (!origin) return callback(null, true);
+// Handle OPTIONS preflight BEFORE other middleware
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
 
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(null, true); // Allow all origins for now, remove this line to restrict
-        }
-    },
+    // Set CORS headers for all requests
+    res.header('Access-Control-Allow-Origin', origin || '*');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Max-Age', '86400');
+
+    // Handle preflight
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);
+    }
+
+    next();
+});
+
+// Also use cors middleware as backup
+app.use(cors({
+    origin: true, // Allow all origins temporarily to fix the issue
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin"],
     exposedHeaders: ["Authorization"],
-    maxAge: 86400 // 24 hours
+    optionsSuccessStatus: 200
 }));
-
-// Handle preflight requests
-app.options('*', cors());
 
 app.use(morgan("dev"));
 app.use(express.json());
