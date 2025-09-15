@@ -65,7 +65,7 @@ export default function AdminProduct ()
       productData.append( 'quantity', quantity );
       // console.log( [ ...productData ] );\
 
-      const { data } = await axios.post( `/product/create/${auth.user.id}`, productData );
+      const { data } = await axios.post( `/product/create`, productData );
       if ( data?.error )
       {
         toast.error( data.error );

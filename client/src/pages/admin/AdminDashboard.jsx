@@ -141,7 +141,7 @@ export default function AdminDashboard() {
     message: `Order from ${order.buyer?.name || 'Guest'}`,
     time: moment(order.createdAt).fromNow(),
     status: order.status || 'Not processed',
-    amount: order.payment?.transaction?.amount || 0
+    amount: parseFloat(order.payment?.transaction?.amount) || 0
   }));
 
   if (isLoading) {
@@ -358,7 +358,7 @@ export default function AdminDashboard() {
                               <p className="text-xs text-gray-500 dark:text-gray-400">{activity.time}</p>
                               {activity.amount > 0 && (
                                 <span className="text-xs font-medium text-indigo-600">
-                                  ${activity.amount.toFixed(2)}
+                                  ${(typeof activity.amount === 'number' ? activity.amount : 0).toFixed(2)}
                                 </span>
                               )}
                               <Badge 

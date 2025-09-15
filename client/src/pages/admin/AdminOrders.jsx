@@ -69,7 +69,7 @@ export default function AdminOrders ()
     setChangedStatus( value );
     try
     {
-      const { data } = await axios.put( `/order/status/${ orderId }/${auth.user.id}`, {
+      const { data } = await axios.put( `/order/status/${ orderId }`, {
         status: value,
       } );
       getOrders();

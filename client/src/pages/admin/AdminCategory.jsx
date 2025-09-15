@@ -71,7 +71,7 @@ export default function AdminCategory() {
     if (!name.trim()) return;
     
     try {
-      const { data } = await axios.post(`/category/create/${auth.user.id}`, { name: name.trim() });
+      const { data } = await axios.post(`/category/create`, { name: name.trim() });
       if (data?.error) {
         toast.error(data.error);
       } else {
@@ -90,8 +90,8 @@ export default function AdminCategory() {
     if (!updatingName.trim()) return;
 
     try {
-      const { data } = await axios.put(`/category/${selected.id}/${auth.user.id}`, { 
-        name: updatingName.trim() 
+      const { data } = await axios.put(`/category/${selected.id}`, {
+        name: updatingName.trim()
       });
 
       if (data?.error) {
@@ -112,7 +112,7 @@ export default function AdminCategory() {
   const handleDelete = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.delete(`/category/${selected.id}/${auth.user.id}`);
+      const { data } = await axios.delete(`/category/${selected.id}`);
 
       if (data?.error) {
         toast.error(data.error);
