@@ -51,7 +51,7 @@ export default function Checkout() {
 
   const getClientToken = async () => {
     try {
-      const { data } = await axios.get(`/braintree/getToken/${auth.user.id}`);
+      const { data } = await axios.get(`/braintree/getToken`);
       setClientToken(data.clientToken);
     } catch (err) {
       console.error(err);
@@ -115,7 +115,7 @@ export default function Checkout() {
       setLoading(true);
       const { nonce } = await instance.requestPaymentMethod();
       
-      await axios.post(`/braintree/payment/${auth.user.id}`, {
+      await axios.post(`/braintree/payment`, {
         nonce,
         cart,
         deliveryInfo
