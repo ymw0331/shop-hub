@@ -20,8 +20,6 @@ const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
     'https://shop-hub-pied-zeta.vercel.app',
-    'https://shop-hub-frontend.vercel.app',
-    'https://shop-hub.vercel.app',
     process.env.CLIENT_URL
 ].filter(Boolean);
 
