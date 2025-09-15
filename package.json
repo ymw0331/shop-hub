@@ -2,11 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Ecommerce API with NodeJS and PostgreSQL",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
+    "vercel-build": "npm run build",
     "typeorm": "tsx ./node_modules/typeorm/cli.js -d src/database/data-source.ts",
     "migrate-data": "tsx scripts/migrate-data.ts",
     "db:clear": "tsx src/scripts/clear-database.ts",
