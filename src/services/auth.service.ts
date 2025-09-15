@@ -12,7 +12,9 @@ import {
 } from "../helpers/validation.js";
 import { CreateUserDto } from "../types/index.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { Logger } from "../utils/logger.js";
+import { emailService } from "./email.service.js";
 
 
 
@@ -234,6 +236,85 @@ export class AuthService {
         this.logger.methodExit('getAllOrders', { count: orders.length });
 
         return orders;
+    }
+
+    // Business Logic: Forgot Password - Generate reset token and send email
+    async forgotPassword(email: string): Promise<void> {
+        this.logger.methodEntry('forgotPassword', { email });
+        const timer = this.logger.startTimer('Forgot Password');
+
+        // Sanitize and validate email
+        const sanitizedEmail = sanitizeEmail(email);
+
+        // Find user by email
+        this.logger.debug('Looking up user by email', { email: sanitizedEmail });
+        const user = await this.userRepository.findByEmail(sanitizedEmail);
+
+        if (!user) {
+            this.logger.warn('Password reset requested for non-existent email', { email: sanitizedEmail });
+            // Don't reveal if email exists or not for security
+            return;
+        }
+
+        // Generate reset token
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+        // Set token expiry to 1 hour from now
+        const expires = new Date(Date.now() + 60 * 60 * 1000);
+
+        // Save token to database
+        this.logger.debug('Saving reset token', { userId: user.id });
+        await this.userRepository.setResetToken(user.id, hashedToken, expires);
+
+        // Send reset email
+        try {
+            await emailService.sendPasswordReset(user.email, resetToken);
+            this.logger.info('Password reset email sent', { userId: user.id, email: sanitizedEmail });
+        } catch (error) {
+            this.logger.error('Failed to send password reset email', error as Error, { email: sanitizedEmail });
+            // Clear the token if email fails
+            await this.userRepository.clearResetToken(user.id);
+            throw new Error('Failed to send reset email. Please try again.');
+        }
+
+        timer();
+        this.logger.methodExit('forgotPassword', { success: true });
+    }
+
+    // Business Logic: Reset Password - Verify token and update password
+    async resetPassword(token: string, newPassword: string): Promise<void> {
+        this.logger.methodEntry('resetPassword');
+        const timer = this.logger.startTimer('Reset Password');
+
+        // Hash the token to match what's in the database
+        const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+        // Find user by valid reset token
+        this.logger.debug('Looking up user by reset token');
+        const user = await this.userRepository.findByResetToken(hashedToken);
+
+        if (!user) {
+            this.logger.warn('Invalid or expired reset token');
+            throw new Error('Invalid or expired reset token');
+        }
+
+        // Validate new password
+        if (!newPassword || newPassword.length < 6) {
+            this.logger.warn('Invalid new password', { userId: user.id });
+            throw new Error('Password must be at least 6 characters long');
+        }
+
+        // Hash new password
+        const hashedPassword = await hashPassword(newPassword);
+
+        // Update password and clear reset token
+        this.logger.debug('Updating user password', { userId: user.id });
+        await this.userRepository.updatePassword(user.id, hashedPassword);
+
+        this.logger.info('Password reset successful', { userId: user.id });
+        timer();
+        this.logger.methodExit('resetPassword', { success: true });
     }
 
     // Private Business Logic: JWT Generation

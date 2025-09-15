@@ -14,6 +14,8 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 import AdminDashboard from './pages/admin/AdminDashboard.jsx';
 import AdminCategory from './pages/admin/AdminCategory.jsx';
 import AdminProduct from './pages/admin/AdminProduct.jsx';
@@ -57,6 +59,8 @@ function AppContent() {
           <Route path='/product/:slug' element={ <ProductView /> } />
           <Route path='/login' element={ <Login /> } />
           <Route path='/register' element={ <Register /> } />
+          <Route path='/forgot-password' element={ <ForgotPassword /> } />
+          <Route path='/reset-password' element={ <ResetPassword /> } />
 
           <Route path='/dashboard' element={ <UserRoute /> } >
             <Route path='user' element={ <UserDashboard /> } />

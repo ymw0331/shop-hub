@@ -48,6 +48,37 @@ export class UserRepository extends BaseRepository<User> {
     }
 
     // Check if email exists (for registration validation)
+
+    // Password reset token methods
+    async findByResetToken(token: string): Promise<User | null> {
+        return this.repository
+            .createQueryBuilder("user")
+            .where("user.resetPasswordToken = :token", { token })
+            .andWhere("user.resetPasswordExpires > :now", { now: new Date() })
+            .getOne();
+    }
+
+    async setResetToken(userId: string, token: string, expires: Date): Promise<User | null> {
+        return this.update(userId, {
+            resetPasswordToken: token,
+            resetPasswordExpires: expires
+        } as Partial<User>);
+    }
+
+    async clearResetToken(userId: string): Promise<User | null> {
+        return this.update(userId, {
+            resetPasswordToken: undefined,
+            resetPasswordExpires: undefined
+        } as Partial<User>);
+    }
+
+    async updatePassword(userId: string, hashedPassword: string): Promise<User | null> {
+        const user = await this.update(userId, { password: hashedPassword } as Partial<User>);
+        if (user) {
+            await this.clearResetToken(userId);
+        }
+        return user;
+    }
     async emailExists(email: string): Promise<boolean> {
         const count = await this.repository.count({ 
             where: { email } as FindOptionsWhere<User> 

@@ -33,6 +33,12 @@ export class User implements IUser {
     @Column({ type: "int", default: 0 })
     role: number;
 
+    @Column({ type: "varchar", nullable: true })
+    resetPasswordToken?: string;
+
+    @Column({ type: "timestamp", nullable: true })
+    resetPasswordExpires?: Date;
+
     // Industry Standard: Relationships
     @OneToMany(() => Order, (order: Order) => order.buyer, {
         cascade: true

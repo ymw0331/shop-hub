@@ -164,6 +164,67 @@ export const allOrders = async (req: Request, res: Response): Promise<void> => {
     }
 };
 
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
+    logger.methodEntry('forgotPassword', { email: req.body.email });
+    const timer = logger.startTimer('Forgot Password');
+
+    try {
+        const { email } = req.body;
+        logger.debug('Password reset request', { email });
+
+        if (!email) {
+            logger.warn('Forgot password request without email');
+            res.status(400).json({ error: 'Email is required' });
+            return;
+        }
+
+        // Delegate to service
+        await authService.forgotPassword(email);
+
+        logger.info('Password reset process initiated', { email });
+        timer();
+
+        // Always return success to prevent email enumeration
+        res.json({
+            message: 'If an account exists with this email, a password reset link has been sent.'
+        });
+        logger.methodExit('forgotPassword', { success: true });
+    } catch (error: any) {
+        logger.error('Forgot password failed', error, { email: req.body.email });
+        res.status(500).json({ error: 'Failed to process password reset request' });
+        logger.methodExit('forgotPassword', { success: false, error: error.message });
+    }
+};
+
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
+    logger.methodEntry('resetPassword');
+    const timer = logger.startTimer('Reset Password');
+
+    try {
+        const { token, password } = req.body;
+        logger.debug('Password reset attempt');
+
+        if (!token || !password) {
+            logger.warn('Reset password request missing data');
+            res.status(400).json({ error: 'Token and password are required' });
+            return;
+        }
+
+        // Delegate to service
+        await authService.resetPassword(token, password);
+
+        logger.info('Password reset successful');
+        timer();
+
+        res.json({ message: 'Password has been reset successfully' });
+        logger.methodExit('resetPassword', { success: true });
+    } catch (error: any) {
+        logger.error('Reset password failed', error);
+        res.status(400).json({ error: error.message || 'Failed to reset password' });
+        logger.methodExit('resetPassword', { success: false, error: error.message });
+    }
+};
+
 // Route protection endpoints for frontend route guards
 export const authCheck = async (req: Request, res: Response): Promise<void> => {
     logger.methodEntry('authCheck', { userId: (req as any).user?.id });

@@ -11,8 +11,10 @@ const logger = new Logger('EmailService');
 const apiInstance = new brevo.TransactionalEmailsApi();
 
 // Set API key from environment
-const apiKey = apiInstance.authentications['apiKey'];
-apiKey.apiKey = process.env.BREVO_API_KEY || process.env.EMAIL_API_KEY || '';
+apiInstance.setApiKey(
+    brevo.TransactionalEmailsApiApiKeys.apiKey,
+    process.env.BREVO_API_KEY || process.env.EMAIL_API_KEY || ''
+);
 
 // Email Service Class
 export class EmailService {
@@ -23,7 +25,7 @@ export class EmailService {
         this.senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@shophub.com';
         this.senderName = process.env.BREVO_SENDER_NAME || 'ShopHub';
 
-        if (!apiKey.apiKey) {
+        if (!process.env.BREVO_API_KEY && !process.env.EMAIL_API_KEY) {
             logger.warn('Brevo API key not configured. Email service will not work.');
         }
     }
