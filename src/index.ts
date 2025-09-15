@@ -51,7 +51,13 @@ async function startServer() {
 }
 
 // Middleware (same as before)
-app.use(cors());
+// Configure CORS with specific options
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(morgan("dev"));
 app.use(express.json());
 

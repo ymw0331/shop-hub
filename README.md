@@ -11,7 +11,7 @@ A production-ready e-commerce marketplace platform built with modern technologie
 - **ORM**: TypeORM
 - **Authentication**: JWT with role-based access control
 - **Payment**: Braintree (Sandbox ready)
-- **Email**: SendGrid integration
+- **Email**: Brevo integration (300 emails/day FREE)
 - **Logging**: Winston with daily rotation
 - **File Storage**: Local filesystem with static serving
 
@@ -36,7 +36,7 @@ A production-ready e-commerce marketplace platform built with modern technologie
 - 💳 Secure checkout with Braintree payment integration
 - 👤 User registration and authentication
 - 📱 Fully responsive design with dark mode support
-- 📧 Email notifications (SendGrid ready, configuration required)
+- 📧 Email notifications (Brevo integration, 300 emails/day FREE)
 - 📋 Order history and tracking
 
 ### Admin Features
@@ -102,8 +102,10 @@ BRAINTREE_PUBLIC_KEY=your_sandbox_public_key
 BRAINTREE_PRIVATE_KEY=your_sandbox_private_key
 BRAINTREE_ENVIRONMENT=sandbox
 
-# SendGrid Configuration
-SENDGRID_API_KEY=your_sendgrid_api_key
+# Brevo Email Service Configuration  
+BREVO_API_KEY=xkeysib-your-brevo-api-key
+BREVO_SENDER_EMAIL=noreply@shophub.com
+BREVO_SENDER_NAME=ShopHub
 
 # Frontend Configuration
 REACT_APP_API=http://localhost:8000/api

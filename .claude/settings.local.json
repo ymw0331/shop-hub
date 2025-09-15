@@ -9,7 +9,8 @@
       "Bash(find:*)",
       "Bash(git commit:*)",
       "Bash(python3:*)",
-      "Bash(psql:*)"
+      "Bash(psql:*)",
+      "Bash(npm run dev:*)"
     ],
     "deny": [],
     "ask": []

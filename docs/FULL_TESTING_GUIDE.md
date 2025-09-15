@@ -49,8 +49,10 @@ BRAINTREE_PUBLIC_KEY=your_sandbox_public_key
 BRAINTREE_PRIVATE_KEY=your_sandbox_private_key
 BRAINTREE_ENVIRONMENT=sandbox
 
-# SendGrid (Get from https://app.sendgrid.com)
-SENDGRID_API_KEY=your_sendgrid_api_key
+# Brevo Email Service (Get from https://www.brevo.com)
+BREVO_API_KEY=xkeysib-your-brevo-api-key
+BREVO_SENDER_EMAIL=noreply@shophub.com
+BREVO_SENDER_NAME=ShopHub
 ```
 
 ### 3. Database Setup
@@ -87,11 +89,12 @@ CVV: Any 3 digits
 Expiry: Any future date
 ```
 
-#### SendGrid (Note: Free tier ends May 27, 2025)
-1. Go to: https://signup.sendgrid.com/
-2. Dashboard → Settings → API Keys
-3. Create API Key with "Full Access"
-4. Copy the 69-character key (shown once!)
+#### Brevo (Recommended - 300 emails/day FREE)
+1. Go to: https://www.brevo.com
+2. Sign up and verify your email
+3. Navigate: Settings → SMTP & API
+4. Create API Key → Name: "ShopHub Production"
+5. Copy the API key immediately
 
 ---
 
