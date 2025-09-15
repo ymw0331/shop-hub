@@ -79,11 +79,30 @@ if (process.env.VERCEL) {
 
 // Middleware (same as before)
 // Configure CORS with specific options
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://shop-hub-frontend.vercel.app',
+    'https://shop-hub.vercel.app',
+    process.env.CLIENT_URL
+].filter(Boolean);
+
 app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: function(origin, callback) {
+        // Allow requests with no origin (like mobile apps or Postman)
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(null, true); // Allow all for development, remove in production to restrict
+        }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+    exposedHeaders: ["Authorization"],
+    maxAge: 86400
 }));
 app.use(morgan("dev"));
 app.use(express.json());
