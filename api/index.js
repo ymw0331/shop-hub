@@ -121,8 +121,8 @@ app.post("/api/register", async (req, res) => {
         // Create user with UUID
         const id = require('crypto').randomUUID();
         const result = await AppDataSource.query(
-            `INSERT INTO users (id, name, email, password, address, role, "createdAt", "updatedAt")
-             VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) RETURNING *`,
+            `INSERT INTO users (id, name, email, password, address, role)
+             VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
             [id, name, email, hashedPassword, address, 0]
         );
 
@@ -219,8 +219,8 @@ app.get("/api/products", async (req, res) => {
         const products = await AppDataSource.query(`
             SELECT p.*, c.name as category_name
             FROM products p
-            LEFT JOIN categories c ON p."categoryId" = c.id
-            ORDER BY p."createdAt" DESC
+            LEFT JOIN categories c ON p.category_id = c.id
+            ORDER BY p.id DESC
         `);
         res.json(products);
     } catch (error) {
@@ -234,7 +234,7 @@ app.get("/api/product/:slug", async (req, res) => {
         const products = await AppDataSource.query(
             `SELECT p.*, c.name as category_name
              FROM products p
-             LEFT JOIN categories c ON p."categoryId" = c.id
+             LEFT JOIN categories c ON p.category_id = c.id
              WHERE p.slug = $1`,
             [slug]
         );
@@ -256,8 +256,8 @@ app.post("/api/product", requireSignIn, isAdmin, async (req, res) => {
         const id = require('crypto').randomUUID();
 
         const result = await AppDataSource.query(
-            `INSERT INTO products (id, name, slug, description, price, "categoryId", quantity, shipping, "createdAt", "updatedAt")
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW()) RETURNING *`,
+            `INSERT INTO products (id, name, slug, description, price, category_id, quantity, shipping)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
             [id, name, slug, description, price, category, quantity, shipping]
         );
 
@@ -271,7 +271,7 @@ app.post("/api/product", requireSignIn, isAdmin, async (req, res) => {
 app.get("/api/orders", requireSignIn, async (req, res) => {
     try {
         const orders = await AppDataSource.query(
-            `SELECT * FROM orders WHERE "buyerId" = $1 ORDER BY "createdAt" DESC`,
+            `SELECT * FROM orders WHERE buyer_id = $1 ORDER BY id DESC`,
             [req.user.id]
         );
         res.json(orders);
