@@ -1,34 +1,65 @@
-<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="100" height="100" rx="20" fill="white"/>
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Modern gradient background with rounded corners -->
+  <rect width="100" height="100" rx="24" fill="url(#bgGradient)"/>
+
   <defs>
-    <linearGradient id="favicon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#6366F1"/>
-      <stop offset="100%" stop-color="#9333EA"/>
+    <!-- Vibrant modern gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
     </linearGradient>
+
+    <!-- Icon gradient -->
+    <linearGradient id="iconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Soft shadow -->
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.15"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  
-  <!-- Shopping bag shape -->
-  <path d="M25 35 L25 80 Q25 90 35 90 L65 90 Q75 90 75 80 L75 35" 
-        stroke="url(#favicon-gradient)" 
-        stroke-width="4" 
-        fill="none"/>
-  
-  <!-- Bag handle -->
-  <path d="M35 35 Q35 20 50 20 Q65 20 65 35" 
-        stroke="url(#favicon-gradient)" 
-        stroke-width="4" 
-        fill="none"/>
-  
-  <!-- S letter -->
-  <path d="M40 50 Q40 45 45 45 L50 45 Q55 45 55 50 Q55 55 50 55 L45 55 Q40 55 40 60 Q40 65 45 65 L55 65 Q60 65 60 60" 
-        stroke="url(#favicon-gradient)" 
-        stroke-width="3" 
-        fill="none" 
-        stroke-linecap="round"/>
-  
-  <!-- H letter -->
-  <path d="M40 70 L40 85 M55 70 L55 85 M40 77.5 L55 77.5" 
-        stroke="url(#favicon-gradient)" 
-        stroke-width="3" 
-        stroke-linecap="round"/>
+
+  <!-- Shopping bag icon with modern minimalist design -->
+  <g filter="url(#softShadow)">
+    <!-- Bag body -->
+    <path d="M 25 40 L 25 70 C 25 75 28 78 33 78 L 67 78 C 72 78 75 75 75 70 L 75 40 C 75 38 73 36 71 36 L 29 36 C 27 36 25 38 25 40 Z"
+          fill="white"
+          opacity="0.95"/>
+
+    <!-- Bag handle with elegant curve -->
+    <path d="M 38 36 C 38 28 42 22 50 22 C 58 22 62 28 62 36"
+          stroke="white"
+          stroke-width="4"
+          fill="none"
+          stroke-linecap="round"
+          opacity="0.95"/>
+
+    <!-- Modern "S" monogram in center -->
+    <path d="M 42 52 C 42 49 44 47 47 47 L 50 47 C 54 47 56 49 56 52 C 56 55 54 57 50 57 L 47 57 C 44 57 42 59 42 62 C 42 65 44 67 47 67 L 53 67 C 56 67 58 65 58 62"
+          stroke="url(#bgGradient)"
+          stroke-width="3"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+
+  <!-- Subtle sparkle effects -->
+  <circle cx="75" cy="25" r="2" fill="white" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="82" cy="32" r="1.5" fill="white" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="20" cy="75" r="1.5" fill="white" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" begin="1s" repeatCount="indefinite"/>
+  </circle>
 </svg>
