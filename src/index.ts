@@ -124,6 +124,15 @@ app.use((req, res, next) => {
     next();
 });
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+    res.json({
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        database: AppDataSource.isInitialized ? 'connected' : 'disconnected'
+    });
+});
+
 // Register API routes
 logger.info('Registering API routes');
 app.use('/api', authRoutes);
