@@ -12,7 +12,15 @@
       "Bash(psql:*)",
       "Bash(npm run dev:*)",
       "WebFetch(domain:vercel.com)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(npx tsx:*)",
+      "mcp__ide__executeCode",
+      "Bash(chmod:*)",
+      "Bash(./test-full-suite.sh:*)",
+      "Bash(xargs rm:*)",
+      "Bash(node:*)",
+      "Bash(rm:*)"
     ],
     "deny": [],
     "ask": []

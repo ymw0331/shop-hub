@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 
 import Menu from './components/nav/Menu.jsx';
 import CartDrawer from './components/cart/CartDrawer.jsx';
+import Footer from './components/layout/Footer.jsx';
 import { useCartDrawer } from './context/cartDrawer';
 import Home from './pages/Home';
 import Shop from './pages/Shop';
@@ -85,6 +86,7 @@ function AppContent() {
         </Route>
         <Route path='*' element={ <PageNotFound /> } />
       </Routes>
+      <Footer />
     </>
   );
 }
