@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { 
@@ -30,51 +30,7 @@ export default function Shop() {
   const [sortBy, setSortBy] = useState('newest');
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Load products and categories
-  useEffect(() => {
-    loadInitialData();
-  }, []);
-
-  // Filter products when filters change
-  useEffect(() => {
-    // Skip initial render when products haven't loaded yet
-    if (!products.length) return;
-    
-    if (!checked.length && !radio.length) {
-      setFilteredProducts(products);
-    } else {
-      loadFilteredProducts();
-    }
-  }, [checked, radio, products]);
-
-  // Sort products when sort option changes
-  useEffect(() => {
-    // Only sort if we have products to sort
-    if (filteredProducts.length > 0) {
-      sortProducts();
-    }
-  }, [sortBy]);
-
-  // Search products locally
-  useEffect(() => {
-    // Skip if products haven't loaded yet
-    if (!products.length) return;
-    
-    if (searchTerm) {
-      const baseProducts = checked.length || radio.length ? filteredProducts : products;
-      const searched = baseProducts.filter(p =>
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredProducts(searched);
-    } else if (!checked.length && !radio.length) {
-      setFilteredProducts(products);
-    } else {
-      loadFilteredProducts();
-    }
-  }, [searchTerm, products, checked.length, radio.length]);
-
-  const loadInitialData = async () => {
+  const loadInitialData = useCallback(async () => {
     setLoading(true);
     try {
       const [productsRes, categoriesRes] = await Promise.all([
@@ -91,9 +47,9 @@ export default function Shop() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const loadFilteredProducts = async () => {
+  const loadFilteredProducts = useCallback(async () => {
     try {
       const { data } = await axios.post("/products/search", {
         checked,
@@ -103,9 +59,9 @@ export default function Shop() {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [checked, radio]);
 
-  const sortProducts = () => {
+  const sortProducts = useCallback(() => {
     let sorted = [...filteredProducts];
     switch (sortBy) {
       case 'priceLow':
@@ -122,7 +78,51 @@ export default function Shop() {
         sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     }
     setFilteredProducts(sorted);
-  };
+  }, [filteredProducts, sortBy]);
+
+  // Load products and categories
+  useEffect(() => {
+    loadInitialData();
+  }, [loadInitialData]);
+
+  // Filter products when filters change
+  useEffect(() => {
+    // Skip initial render when products haven't loaded yet
+    if (!products.length) return;
+
+    if (!checked.length && !radio.length) {
+      setFilteredProducts(products);
+    } else {
+      loadFilteredProducts();
+    }
+  }, [checked, radio, products, loadFilteredProducts]);
+
+  // Sort products when sort option changes
+  useEffect(() => {
+    // Only sort if we have products to sort
+    if (filteredProducts.length > 0) {
+      sortProducts();
+    }
+  }, [sortBy, sortProducts, filteredProducts.length]);
+
+  // Search products locally
+  useEffect(() => {
+    // Skip if products haven't loaded yet
+    if (!products.length) return;
+
+    if (searchTerm) {
+      const baseProducts = checked.length || radio.length ? filteredProducts : products;
+      const searched = baseProducts.filter(p =>
+        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredProducts(searched);
+    } else if (!checked.length && !radio.length) {
+      setFilteredProducts(products);
+    } else {
+      loadFilteredProducts();
+    }
+  }, [searchTerm, products, checked.length, radio.length, filteredProducts, loadFilteredProducts]);
 
   const handleChecked = (value, id) => {
     let all = [...checked];

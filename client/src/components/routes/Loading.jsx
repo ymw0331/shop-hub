@@ -29,7 +29,7 @@ export default function Loading ( { path = "login" } )
     // cleanup
     return () => clearInterval( interval );
 
-  }, [ count ] );
+  }, [ count, navigate, path, location.pathname ] );
 
   return ( 
     <div className='flex justify-center items-center bg-white dark:bg-gray-900 min-h-[90vh]'>

@@ -22,26 +22,24 @@ import {
   Truck,
   Package2
 } from "lucide-react";
-import { cn } from "../../lib/utils";
 import usePageTitle from '../../hooks/usePageTitle';
 
 export default function AdminOrders ()
 {
   usePageTitle('Manage Orders');
   // context
-  const [ auth, setAuth ] = useAuth();
+  const [ auth ] = useAuth();
   // state
   const [ orders, setOrders ] = useState( [] );
   const [ loading, setLoading ] = useState( true );
   const [ expandedOrders, setExpandedOrders ] = useState( new Set() );
-  const [ status, setStatus ] = useState( [
+  const [ status ] = useState( [
     "Not processed",
-    "Processing", 
+    "Processing",
     "Shipped",
     "Delivered",
     "Cancelled",
   ] );
-  const [ changedStatus, setChangedStatus ] = useState( "" );
 
   useEffect( () =>
   {
@@ -66,10 +64,9 @@ export default function AdminOrders ()
 
   const handleChange = async ( orderId, value ) =>
   {
-    setChangedStatus( value );
     try
     {
-      const { data } = await axios.put( `/order/status/${ orderId }`, {
+      await axios.put( `/order/status/${ orderId }`, {
         status: value,
       } );
       getOrders();
@@ -109,16 +106,6 @@ export default function AdminOrders ()
     );
   };
 
-  const getStatusIcon = ( orderStatus ) => {
-    const icons = {
-      "Not processed": Clock,
-      "Processing": Package,
-      "Shipped": Truck,
-      "Delivered": CheckCircle2,
-      "Cancelled": XCircle,
-    };
-    return icons[orderStatus] || Clock;
-  };
 
   if ( loading ) {
     return (

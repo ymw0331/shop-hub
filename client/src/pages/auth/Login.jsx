@@ -8,7 +8,6 @@ import {
   ArrowRight, Sparkles, CheckCircle
 } from 'lucide-react';
 import { useAuth } from '../../context/auth';
-import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import Checkbox from '../../components/ui/Checkbox';
 import { cn } from '../../lib/utils';

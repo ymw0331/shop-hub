@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { ArrowRight, Grid3x3, TrendingUp, Sparkles } from 'lucide-react';
@@ -18,26 +18,16 @@ export default function Home() {
   const [initialLoading, setInitialLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadProducts();
-    getTotal();
-  }, []);
-
-  useEffect(() => {
-    if (page === 1) return;
-    loadMore();
-  }, [page]);
-
-  const getTotal = async () => {
+  const getTotal = useCallback(async () => {
     try {
       const { data } = await axios.get("/products/count");
       setTotal(data);
     } catch (error) {
       console.log(error);
     }
-  };
+  }, []);
 
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       setInitialLoading(true);
       const { data } = await axios.get(`/products/${page}`);
@@ -47,9 +37,9 @@ export default function Home() {
       console.log(error);
       setInitialLoading(false);
     }
-  };
+  }, [page]);
 
-  const loadMore = async () => {
+  const loadMore = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/products/${page}`);
@@ -59,7 +49,17 @@ export default function Home() {
       console.log(error);
       setLoading(false);
     }
-  };
+  }, [page, products]);
+
+  useEffect(() => {
+    loadProducts();
+    getTotal();
+  }, [loadProducts, getTotal]);
+
+  useEffect(() => {
+    if (page === 1) return;
+    loadMore();
+  }, [page, loadMore]);
 
   const productSortedBySold = [...products]?.sort((a, b) => (a.sold < b.sold ? 1 : -1));
 

@@ -37,8 +37,9 @@ export default function ProductCard({ p: product, viewMode }) {
     <motion.div
       whileHover={{ y: -4 }}
       transition={{ duration: 0.2 }}
-      className="group relative bg-white dark:bg-gray-900 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer"
+      className="group relative bg-white dark:bg-gray-900 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer product-card"
       onClick={() => navigate(`/product/${product.slug}`)}
+      data-testid="product-card"
     >
       {/* Badges */}
       <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
@@ -127,7 +128,7 @@ export default function ProductCard({ p: product, viewMode }) {
         )}
 
         {/* Title */}
-        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+        <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-primary transition-colors product-title">
           {product.name}
         </h3>
 
@@ -139,7 +140,7 @@ export default function ProductCard({ p: product, viewMode }) {
         {/* Price and Stock Info */}
         <div className="flex items-center justify-between mb-3">
           <div>
-            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 product-price">
               {formatCurrency(product.price)}
             </p>
             {product.shipping && (
@@ -161,8 +162,9 @@ export default function ProductCard({ p: product, viewMode }) {
           <Button
             onClick={handleAddToCart}
             disabled={!inStock}
-            className="flex-1"
+            className="flex-1 add-to-cart-btn"
             size="sm"
+            data-testid="add-to-cart"
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             Add to Cart

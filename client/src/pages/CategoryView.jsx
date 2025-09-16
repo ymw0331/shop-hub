@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
@@ -25,11 +25,7 @@ export default function CategoryView() {
   
   const params = useParams();
 
-  useEffect(() => {
-    if (params?.slug) loadProductsByCategory();
-  }, [params?.slug]);
-
-  const loadProductsByCategory = async () => {
+  const loadProductsByCategory = useCallback(async () => {
     setLoading(true);
     try {
       const { data } = await axios.get(`/products-by-category/${params.slug}`);
@@ -41,7 +37,11 @@ export default function CategoryView() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.slug, sortBy]);
+
+  useEffect(() => {
+    if (params?.slug) loadProductsByCategory();
+  }, [params?.slug, loadProductsByCategory]);
 
   const sortProducts = (productsToSort, sortOption) => {
     let sorted = [...productsToSort];

@@ -10,7 +10,6 @@ export default function SearchModal({ isOpen, onClose }) {
   const [keyword, setKeyword] = useState('');
   // const [suggestions, setSuggestions] = useState([]);
   const [recentSearches, setRecentSearches] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [values, setValues] = useSearch();
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -31,22 +30,20 @@ export default function SearchModal({ isOpen, onClose }) {
     e.preventDefault();
     if (!keyword.trim()) return;
     
-    setLoading(true);
     try {
       const { data } = await axios.get(`/products/search/${keyword}`);
       setValues({ ...values, results: data, keyword });
-      
+
       // Save to recent searches
       const recent = JSON.parse(localStorage.getItem('recentSearches') || '[]');
       const updated = [keyword, ...recent.filter(s => s !== keyword)].slice(0, 5);
       localStorage.setItem('recentSearches', JSON.stringify(updated));
-      
+
       onClose();
       navigate('/search');
     } catch (error) {
       console.log(error);
     }
-    setLoading(false);
   };
 
   const handleRecentSearch = (search) => {

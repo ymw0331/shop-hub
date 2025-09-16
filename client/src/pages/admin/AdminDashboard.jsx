@@ -7,11 +7,11 @@ import PageHeader from '../../components/layout/PageHeader';
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import moment from 'moment';
-import { 
-  Users, 
-  Package, 
-  ShoppingCart, 
-  TrendingUp, 
+import {
+  Users,
+  Package,
+  ShoppingCart,
+  TrendingUp,
   DollarSign,
   Eye,
   BarChart3,
@@ -22,10 +22,7 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Plus,
-  Filter,
-  Clock,
-  CheckCircle,
-  AlertCircle
+  Filter
 } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 import usePageTitle from '../../hooks/usePageTitle';
@@ -61,14 +58,13 @@ export default function AdminDashboard() {
       setIsLoading(true);
       
       // Fetch all data in parallel
-      const [ordersRes, productsRes, productsCountRes] = await Promise.all([
+      const [ordersRes, , productsCountRes] = await Promise.all([
         axios.get('/admin/orders'),
         axios.get('/products'),
         axios.get('/products/count')
       ]);
 
       const orders = ordersRes.data || [];
-      const products = productsRes.data || [];
       const productsCount = productsCountRes.data || 0;
 
       // Calculate total revenue from orders

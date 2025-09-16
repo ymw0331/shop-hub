@@ -3,13 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
-import { 
+import {
   Mail, Lock, Eye, EyeOff, User, ShoppingBag,
-  ArrowRight, Sparkles, CheckCircle, UserPlus,
+  Sparkles, CheckCircle, UserPlus,
   Shield, AlertCircle
 } from 'lucide-react';
 import { useAuth } from '../../context/auth';
-import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import Checkbox from '../../components/ui/Checkbox';
 import { cn } from '../../lib/utils';
