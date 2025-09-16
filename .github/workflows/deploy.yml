@@ -1,0 +1,256 @@
+name: 🚀 Deploy to Production
+
+on:
+  push:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  validate-and-notify:
+    name: 🔍 Validate & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 🔔 Notify Discord - Build Started
+        if: always()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "🔄 Deployment Started",
+                "description": "**Repository:** `'"${{ github.repository }}"'`\n**Branch:** `'"${{ github.ref_name }}"'`\n**Commit:** `'"${GITHUB_SHA::7}"'`",
+                "color": 3447003,
+                "fields": [
+                  {
+                    "name": "Triggered By",
+                    "value": "'"${{ github.actor }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Workflow",
+                    "value": "Production Deploy",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+      - name: 📦 Install Backend Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Backend
+        run: npm run build
+        continue-on-error: false
+
+      - name: 📦 Install Frontend Dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: 🏗️ Build Frontend
+        working-directory: ./client
+        run: npm run build
+        env:
+          CI: false
+        continue-on-error: false
+
+      - name: ✅ Notify Discord - Build Success
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "✅ Build Successful",
+                "description": "**All builds completed successfully!**\n\nDeployment will begin automatically:",
+                "color": 3066993,
+                "fields": [
+                  {
+                    "name": "🌐 Frontend",
+                    "value": "[Vercel Auto-Deploy](https://shop-hub-pied-zeta.vercel.app)",
+                    "inline": true
+                  },
+                  {
+                    "name": "🔧 Backend",
+                    "value": "[Render Auto-Deploy](https://shop-hub-api-894x.onrender.com)",
+                    "inline": true
+                  },
+                  {
+                    "name": "📝 Commit Message",
+                    "value": "```'"$(git log -1 --pretty=%B | head -c 100)"'```",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD • Build #'"${{ github.run_number }}"'"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+      - name: ❌ Notify Discord - Build Failed
+        if: failure()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "❌ Build Failed",
+                "description": "**The build process encountered an error!**",
+                "color": 15158332,
+                "fields": [
+                  {
+                    "name": "Repository",
+                    "value": "`'"${{ github.repository }}"'`",
+                    "inline": true
+                  },
+                  {
+                    "name": "Failed Job",
+                    "value": "'"${{ github.job }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Action Required",
+                    "value": "Please check the [workflow logs]('"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"') for details.",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD • Build #'"${{ github.run_number }}"'"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+  deployment-monitor:
+    name: 📊 Monitor Deployment
+    runs-on: ubuntu-latest
+    needs: validate-and-notify
+    if: success()
+
+    steps:
+      - name: ⏱️ Wait for deployments
+        run: sleep 60
+
+      - name: 🔍 Check Frontend Status
+        id: check-frontend
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://shop-hub-pied-zeta.vercel.app)
+          echo "status=$response" >> $GITHUB_OUTPUT
+          if [ "$response" = "200" ]; then
+            echo "✅ Frontend is up!"
+          else
+            echo "⚠️ Frontend returned status: $response"
+          fi
+
+      - name: 🔍 Check Backend Status
+        id: check-backend
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" https://shop-hub-api-894x.onrender.com/api/health)
+          echo "status=$response" >> $GITHUB_OUTPUT
+          if [ "$response" = "200" ]; then
+            echo "✅ Backend is up!"
+          else
+            echo "⚠️ Backend returned status: $response"
+          fi
+
+      - name: 🎉 Notify Discord - Deployment Complete
+        if: steps.check-frontend.outputs.status == '200' && steps.check-backend.outputs.status == '200'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "🎉 Deployment Successful!",
+                "description": "**ShopHub is now live in production!**",
+                "color": 3066993,
+                "fields": [
+                  {
+                    "name": "🌐 Frontend",
+                    "value": "[Live Site](https://shop-hub-pied-zeta.vercel.app)",
+                    "inline": true
+                  },
+                  {
+                    "name": "🔧 API",
+                    "value": "[API Endpoint](https://shop-hub-api-894x.onrender.com/api)",
+                    "inline": true
+                  },
+                  {
+                    "name": "📊 Health Check",
+                    "value": "✅ All systems operational",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD • Deployment Complete"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+      - name: ⚠️ Notify Discord - Partial Deployment
+        if: steps.check-frontend.outputs.status != '200' || steps.check-backend.outputs.status != '200'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "⚠️ Deployment Warning",
+                "description": "**Deployment completed with warnings**",
+                "color": 16776960,
+                "fields": [
+                  {
+                    "name": "Frontend Status",
+                    "value": "'"${{ steps.check-frontend.outputs.status }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Backend Status",
+                    "value": "'"${{ steps.check-backend.outputs.status }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Note",
+                    "value": "Services may still be starting up. Check again in a few minutes.",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi

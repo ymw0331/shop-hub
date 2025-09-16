@@ -1,0 +1,222 @@
+name: 🔍 Pull Request Checks
+
+on:
+  pull_request:
+    branches: [master, main, develop]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    name: 🧪 Validate PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: 🔔 Notify Discord - PR Check Started
+        if: github.event.action == 'opened'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "🔍 New Pull Request",
+                "description": "**PR #'"${{ github.event.pull_request.number }}"':** '"${{ github.event.pull_request.title }}"'",
+                "color": 3447003,
+                "fields": [
+                  {
+                    "name": "Author",
+                    "value": "'"${{ github.event.pull_request.user.login }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Branch",
+                    "value": "`'"${{ github.event.pull_request.head.ref }}"'` → `'"${{ github.event.pull_request.base.ref }}"'`",
+                    "inline": true
+                  },
+                  {
+                    "name": "Status",
+                    "value": "🔄 Running checks...",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+      - name: 📦 Cache Dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            node_modules
+            client/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: 📥 Install Backend Dependencies
+        run: npm ci
+
+      - name: 🔍 TypeScript Check - Backend
+        run: npx tsc --noEmit
+        continue-on-error: true
+
+      - name: 🏗️ Build Backend
+        id: backend-build
+        run: npm run build
+        continue-on-error: true
+
+      - name: 📥 Install Frontend Dependencies
+        working-directory: ./client
+        run: npm ci
+
+      - name: 🏗️ Build Frontend
+        id: frontend-build
+        working-directory: ./client
+        run: npm run build
+        env:
+          CI: false
+        continue-on-error: true
+
+      - name: 📊 Generate Check Report
+        id: report
+        run: |
+          if [ "${{ steps.backend-build.outcome }}" = "success" ] && [ "${{ steps.frontend-build.outcome }}" = "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "message=All checks passed ✅" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "message=Some checks failed ❌" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 💬 Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const status = '${{ steps.report.outputs.status }}';
+            const emoji = status === 'success' ? '✅' : '❌';
+            const title = status === 'success' ? 'All checks passed!' : 'Some checks failed';
+
+            const body = `## ${emoji} PR Check Results
+
+            | Check | Status |
+            |-------|--------|
+            | Backend Build | ${{ steps.backend-build.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |
+            | Frontend Build | ${{ steps.frontend-build.outcome == 'success' && '✅ Passed' || '❌ Failed' }} |
+
+            ---
+            *ShopHub CI/CD • Run #${{ github.run_number }}*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: ✅ Notify Discord - PR Checks Passed
+        if: steps.report.outputs.status == 'success'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "✅ PR Checks Passed",
+                "description": "**PR #'"${{ github.event.pull_request.number }}"'** is ready for review!",
+                "color": 3066993,
+                "fields": [
+                  {
+                    "name": "Title",
+                    "value": "'"${{ github.event.pull_request.title }}"'",
+                    "inline": false
+                  },
+                  {
+                    "name": "Author",
+                    "value": "'"${{ github.event.pull_request.user.login }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "View PR",
+                    "value": "[Click here]('"${{ github.event.pull_request.html_url }}"')",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+      - name: ❌ Notify Discord - PR Checks Failed
+        if: steps.report.outputs.status == 'failure'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -X POST "$DISCORD_WEBHOOK" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "embeds": [{
+                "title": "❌ PR Checks Failed",
+                "description": "**PR #'"${{ github.event.pull_request.number }}"'** needs attention",
+                "color": 15158332,
+                "fields": [
+                  {
+                    "name": "Title",
+                    "value": "'"${{ github.event.pull_request.title }}"'",
+                    "inline": false
+                  },
+                  {
+                    "name": "Backend Build",
+                    "value": "'"${{ steps.backend-build.outcome }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Frontend Build",
+                    "value": "'"${{ steps.frontend-build.outcome }}"'",
+                    "inline": true
+                  },
+                  {
+                    "name": "Action Required",
+                    "value": "Please fix the failing checks",
+                    "inline": false
+                  },
+                  {
+                    "name": "View Details",
+                    "value": "[PR Link]('"${{ github.event.pull_request.html_url }}"') | [Workflow]('"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"')",
+                    "inline": false
+                  }
+                ],
+                "footer": {
+                  "text": "ShopHub CI/CD"
+                },
+                "timestamp": "'"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"'"
+              }]
+            }'
+          fi
+
+      - name: 📝 Set PR Status
+        if: always()
+        run: |
+          if [ "${{ steps.report.outputs.status }}" = "failure" ]; then
+            exit 1
+          fi
