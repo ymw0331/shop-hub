@@ -1,6 +1,19 @@
-# ShopHub - Modern Full-Stack E-Commerce Marketplace
+# 🛍️ ShopHub - Modern Full-Stack E-Commerce Marketplace
+
+> **Production-ready MERN e-commerce marketplace with PostgreSQL, TypeScript, Braintree payments, and Tailwind CSS modern UI**
 
 A production-ready e-commerce marketplace platform built with modern technologies and best practices. Originally based on Ryan Dhungel's Udemy course, now fully modernized with PostgreSQL, TypeScript, and enterprise-grade architecture.
+
+[![Node.js](https://img.shields.io/badge/Node.js-18+-43853D?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14+-336791?style=for-the-badge&logo=postgresql)](https://www.postgresql.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+
+## 🌐 Links
+
+🔗 **GitHub Repository**: [https://github.com/ymw0331/e-commercehub](https://github.com/ymw0331/e-commercehub)
+🚀 **Live Demo**: Coming Soon
 
 ## 🚀 Tech Stack
 
