@@ -37,7 +37,7 @@ async function cleanupDatabase() {
                     logger.info(`Dropping table: ${table}`);
                     await queryRunner.query(`DROP TABLE IF EXISTS \`${table}\``);
                 } catch (error) {
-                    logger.warn(`Could not drop table ${table}:`, error);
+                    logger.warn(`Could not drop table ${table}:`, error as Error);
                 }
             }
 

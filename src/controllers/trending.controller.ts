@@ -93,7 +93,7 @@ export const trackProductView = async (req: Request, res: Response) => {
         const { productId } = req.params;
         const { duration = 0 } = req.body;
         const userId = (req as any).user?.id;
-        const sessionId = req.session?.id || req.headers['x-session-id'];
+        const sessionId = (req as any).session?.id || req.headers['x-session-id'];
 
         const productView = productViewRepository.create({
             productId,
