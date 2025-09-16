@@ -144,7 +144,7 @@ export class EmailService {
 
             sendSmtpEmail.subject = 'Password Reset Request - ShopHub';
 
-            const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+            const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3001'}/reset-password?token=${resetToken}`;
 
             sendSmtpEmail.htmlContent = `
                 <h2>Password Reset Request</h2>
@@ -238,6 +238,96 @@ export class EmailService {
         } catch (error) {
             logger.error('Failed to send order status email', error as Error, { to, orderId });
             // Don't throw - status update email failure shouldn't break the process
+        }
+    }
+
+    /**
+     * Send newsletter subscription confirmation email
+     */
+    async sendNewsletterConfirmation(to: string, userName?: string): Promise<void> {
+        try {
+            const sendSmtpEmail = new brevo.SendSmtpEmail();
+
+            sendSmtpEmail.sender = {
+                email: this.senderEmail,
+                name: this.senderName
+            };
+
+            sendSmtpEmail.to = [{
+                email: to
+            }];
+
+            sendSmtpEmail.subject = '🎉 Welcome to ShopHub Newsletter!';
+
+            sendSmtpEmail.htmlContent = `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                    <h2 style="color: #333;">Welcome to ShopHub Newsletter!</h2>
+                    <p>Hi ${userName || 'there'}!</p>
+                    <p>Thank you for subscribing to our newsletter. You're now part of our exclusive community!</p>
+
+                    <h3>What you can expect:</h3>
+                    <ul>
+                        <li>🎁 Exclusive deals and early access to sales</li>
+                        <li>🆕 New product launches and updates</li>
+                        <li>💡 Shopping tips and style guides</li>
+                        <li>🎉 Special birthday offers</li>
+                    </ul>
+
+                    <p><strong>As a welcome gift, enjoy 10% OFF your next purchase!</strong></p>
+                    <p>Use code: <span style="background: #f0f0f0; padding: 5px 10px; font-weight: bold;">WELCOME10</span></p>
+
+                    <div style="margin: 30px 0;">
+                        <a href="${process.env.FRONTEND_URL || 'http://localhost:3001'}/shop"
+                           style="display: inline-block; padding: 12px 30px; background-color: #667eea; color: white; text-decoration: none; border-radius: 5px;">
+                            Start Shopping Now
+                        </a>
+                    </div>
+
+                    <p>Stay tuned for amazing deals coming your way!</p>
+
+                    <hr style="border: 1px solid #e0e0e0; margin: 30px 0;">
+
+                    <p style="color: #666; font-size: 12px;">
+                        You received this email because you subscribed to ShopHub newsletter.
+                        If you wish to unsubscribe, you can do so at any time from your account settings.
+                    </p>
+
+                    <p>Best regards,<br><strong>The ShopHub Team</strong></p>
+                </div>
+            `;
+
+            sendSmtpEmail.textContent = `
+                Welcome to ShopHub Newsletter!
+
+                Hi ${userName || 'there'}!
+
+                Thank you for subscribing to our newsletter. You're now part of our exclusive community!
+
+                What you can expect:
+                - Exclusive deals and early access to sales
+                - New product launches and updates
+                - Shopping tips and style guides
+                - Special birthday offers
+
+                As a welcome gift, enjoy 10% OFF your next purchase!
+                Use code: WELCOME10
+
+                Visit our shop: ${process.env.FRONTEND_URL || 'http://localhost:3001'}/shop
+
+                Stay tuned for amazing deals coming your way!
+
+                Best regards,
+                The ShopHub Team
+
+                ---
+                You received this email because you subscribed to ShopHub newsletter.
+            `;
+
+            await apiInstance.sendTransacEmail(sendSmtpEmail);
+            logger.info('Newsletter confirmation email sent', { to });
+        } catch (error) {
+            logger.error('Failed to send newsletter confirmation email', error as Error, { to });
+            // Don't throw - email failure shouldn't break the subscription process
         }
     }
 

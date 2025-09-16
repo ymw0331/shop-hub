@@ -8,6 +8,10 @@ import path from "path";
 import authRoutes from "./routes/auth.router.js";
 import categoryRoutes from "./routes/category.router.js";
 import productRoutes from "./routes/product.router.js";
+import trendingRoutes from "./routes/trending.router.js";
+import recommendationRoutes from "./routes/recommendation.router.js";
+import collectionRoutes from "./routes/collection.router.js";
+import newsletterRoutes from "./routes/newsletter.router.js";
 import { Logger } from "./utils/logger.js";
 
 
@@ -78,14 +82,39 @@ if (process.env.VERCEL) {
 }
 
 // Middleware (same as before)
-// Configure CORS with specific options
-const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'https://shop-hub-pied-zeta.vercel.app',  // Frontend on Vercel
-    'https://shop-hub-api-894x.onrender.com',  // Backend on Render
-    process.env.CLIENT_URL
-].filter(Boolean);
+// Configure CORS with environment-based options
+const getCorsOrigins = () => {
+    const origins = [];
+
+    // Add production URLs from environment
+    if (process.env.FRONTEND_URL) {
+        origins.push(process.env.FRONTEND_URL);
+    }
+    if (process.env.BACKEND_URL) {
+        origins.push(process.env.BACKEND_URL);
+    }
+
+    // Add development URLs
+    if (process.env.NODE_ENV === 'development') {
+        origins.push('http://localhost:3000');
+        origins.push('http://localhost:3001');
+    }
+
+    // Add any additional allowed origins from env (comma-separated)
+    if (process.env.CORS_ALLOWED_ORIGINS) {
+        const additionalOrigins = process.env.CORS_ALLOWED_ORIGINS.split(',').map(origin => origin.trim());
+        origins.push(...additionalOrigins);
+    }
+
+    // Legacy support
+    if (process.env.CLIENT_URL) {
+        origins.push(process.env.CLIENT_URL);
+    }
+
+    return origins.filter(Boolean);
+};
+
+const allowedOrigins = getCorsOrigins();
 
 app.use(cors({
     origin: function(origin, callback) {
@@ -95,7 +124,13 @@ app.use(cors({
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
-            callback(null, true); // Allow all for development, remove in production to restrict
+            // In production, restrict to allowed origins only
+            if (process.env.NODE_ENV === 'production') {
+                callback(new Error('Not allowed by CORS'));
+            } else {
+                // In development, allow all origins
+                callback(null, true);
+            }
         }
     },
     credentials: true,
@@ -138,6 +173,10 @@ logger.info('Registering API routes');
 app.use('/api', authRoutes);
 app.use('/api', categoryRoutes);
 app.use('/api', productRoutes);
+app.use('/api', trendingRoutes);
+app.use('/api', recommendationRoutes);
+app.use('/api', collectionRoutes);
+app.use('/api', newsletterRoutes);
 
 // Serve uploaded photos statically under /api
 app.use('/api/uploads', express.static(path.join(process.cwd(), 'public/uploads')));
