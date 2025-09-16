@@ -1,13 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
-import { ArrowRight, Grid3x3, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowRight, Grid3x3, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import HeroSection from '../components/hero/HeroSection';
 import ProductCard from '../components/cards/ProductCard';
 import { SkeletonProductGrid } from '../components/ui/Skeleton';
 import Button from '../components/ui/Button';
 import usePageTitle from '../hooks/usePageTitle';
+import TrendingProducts from '../components/home/TrendingProducts';
+import PersonalizedSection from '../components/home/PersonalizedSection';
+import FeaturedCollections from '../components/home/FeaturedCollections';
+import SocialFeed from '../components/home/SocialFeed';
+import NewsletterSignup from '../components/home/NewsletterSignup';
 
 export default function Home() {
   usePageTitle('Home');
@@ -68,6 +73,9 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection />
 
+      {/* Trending Products Section */}
+      <TrendingProducts />
+
       {/* Categories Section */}
       <section className="py-16 bg-white dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -119,78 +127,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Products Sections */}
-      <section className="py-16">
+      {/* Personalized Recommendations */}
+      <PersonalizedSection />
+
+      {/* Featured Collections */}
+      <FeaturedCollections />
+
+      {/* Social Feed */}
+      <SocialFeed />
+
+      {/* Best Sellers Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* New Arrivals */}
-            <div>
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="flex items-center justify-between mb-6"
-              >
-                <div className="flex items-center gap-3">
-                  <Sparkles className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">New Arrivals</h2>
-                </div>
-                <Button
-                  onClick={() => navigate('/shop')}
-                  variant="ghost"
-                  size="sm"
-                >
-                  View All
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </motion.div>
-
-              {initialLoading ? (
-                <SkeletonProductGrid count={3} />
-              ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {products?.slice(0, 3).map((p) => (
-                    <ProductCard key={p.id} p={p} />
-                  ))}
-                </div>
-              )}
+          <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="mb-12"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <TrendingUp className="h-8 w-8 text-primary" />
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Best Sellers</h2>
             </div>
-
-            {/* Best Sellers */}
-            <div>
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                className="flex items-center justify-between mb-6"
-              >
-                <div className="flex items-center gap-3">
-                  <TrendingUp className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Best Sellers</h2>
-                </div>
-                <Button
-                  onClick={() => navigate('/shop')}
-                  variant="ghost"
-                  size="sm"
-                >
-                  View All
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </motion.div>
-
-              {initialLoading ? (
-                <SkeletonProductGrid count={3} />
-              ) : (
-                <div className="grid grid-cols-1 gap-6">
-                  {productSortedBySold?.slice(0, 3).map((p) => (
-                    <ProductCard key={p.id} p={p} />
-                  ))}
-                </div>
-              )}
-            </div>
+            <Button
+              onClick={() => navigate('/shop?sort=best-selling')}
+              variant="ghost"
+              size="sm"
+            >
+              View All
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
           </div>
+        </motion.div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {initialLoading ? (
+            <SkeletonProductGrid count={6} />
+          ) : (
+            productSortedBySold?.slice(0, 6).map((p, index) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+              >
+                <ProductCard p={p} />
+              </motion.div>
+            ))
+          )}
+        </div>
 
           {/* Load More */}
           {products && products.length < total && (
@@ -216,6 +204,9 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      {/* Newsletter Signup */}
+      <NewsletterSignup />
 
       {/* Features Section */}
       <section className="py-16 bg-white dark:bg-gray-800">

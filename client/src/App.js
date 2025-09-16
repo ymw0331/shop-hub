@@ -11,6 +11,8 @@ import ProductView from './pages/ProductView';
 import Search from './pages/Search';
 import CategoriesList from './pages/CategoriesList';
 import CategoryView from './pages/CategoryView';
+import Collections from './pages/Collections';
+import CollectionView from './pages/CollectionView';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import Login from './pages/auth/Login';
@@ -54,6 +56,8 @@ function AppContent() {
           <Route path='/shop' element={ <Shop /> } />
           <Route path='/categories' element={ <CategoriesList /> } />
           <Route path='/category/:slug' element={ <CategoryView /> } />
+          <Route path='/collections' element={ <Collections /> } />
+          <Route path='/collections/:slug' element={ <CollectionView /> } />
           <Route path='/cart' element={ <Cart /> } />
           <Route path='/checkout' element={ <Checkout /> } />
           <Route path='/search' element={ <Search /> } />
